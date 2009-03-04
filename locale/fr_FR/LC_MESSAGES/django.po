@@ -1,0 +1,110 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-11-09 01:49+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: models.py:40
+msgid "Name"
+msgstr "Nom"
+
+#: models.py:41 models.py:92
+msgid "Slug"
+msgstr "Slug"
+
+#: models.py:42
+msgid "Description"
+msgstr "Description"
+
+#: models.py:43 models.py:110
+msgid "Site"
+msgstr "Site"
+
+#: models.py:51
+msgid "category"
+msgstr "Catégorie"
+
+#: models.py:52
+msgid "categories"
+msgstr "Catégories"
+
+#: models.py:85
+msgid "Live"
+msgstr "En ligne"
+
+#: models.py:86
+msgid "Draft"
+msgstr "Brouillon"
+
+#: models.py:87
+msgid "Hidden"
+msgstr "Caché"
+
+#: models.py:88
+msgid "Deleted"
+msgstr "Supprimé"
+
+#: models.py:91
+msgid "Title"
+msgstr "Titre"
+
+#: models.py:93
+msgid "Author"
+msgstr "Auteur"
+
+#: models.py:94
+msgid "Exceprt"
+msgstr "Extrait"
+
+#: models.py:95
+msgid "Content"
+msgstr "Contenu"
+
+#: models.py:97
+msgid "Published on"
+msgstr "Publié le"
+
+#: models.py:100
+msgid "Status"
+msgstr "Status"
+
+#: models.py:102
+msgid "Selected"
+msgstr "Selectionné"
+
+#: models.py:103
+msgid "Are comments open?"
+msgstr "Commentaires ouverts ?"
+
+#: models.py:104
+msgid "Are trackbacks open?"
+msgstr "Trackbacks ouverts ?"
+
+#: models.py:106
+msgid "Categories"
+msgstr "Catégories"
+
+#: models.py:119
+msgid "item"
+msgstr "post"
+
+#: models.py:120
+msgid "items"
+msgstr "posts"
+
+#: models.py:138 models.py:159
+#, python-format
+msgid "The value of BLOG_ITEM_URL should be '%(expected)s' and not '%(found)s'"
+msgstr "La valeur de BLOG_ITEM_URL devrait être '%(expected)s' et pas '%(found)s'"
