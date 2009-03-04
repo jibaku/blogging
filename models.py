@@ -9,28 +9,23 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from django.core.exceptions import ImproperlyConfigured
 from django.template.loader import render_to_string
-
 from django.contrib.sites.managers import CurrentSiteManager
 
 # Importing useful models and fields
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
+from django.conf import settings
 
 import tagging
 from tagging.fields import TagField
+
 import blogging.settings
-from django.conf import settings
-from utils import tokenize
+from blogging.utils import tokenize
+from blogging.managers import AvailableCategoriesManager, AvailableItemsManager
 
 #
 #   Category
 #
-class AvailableCategoriesManager(models.Manager):
-    def get_query_set(self):
-        current_site = Site.objects.get_current()
-        queryset = super(AvailableCategoriesManager, self).get_query_set()
-        queryset = queryset.filter(site=current_site)
-        return queryset
 
 class Category(models.Model):
     """
@@ -61,16 +56,6 @@ class Category(models.Model):
 #
 #   Item
 #
-class AvailableItemsManager(models.Manager):
-    def get_query_set(self):
-        now = datetime.datetime.now()
-        current_site = Site.objects.get_current()
-        
-        queryset = super(AvailableItemsManager, self).get_query_set()
-        queryset = queryset.filter(published_on__lte=now)
-        queryset = queryset.filter(status=Post.PUBLISHED)
-        queryset = queryset.filter(site=current_site)
-        return queryset
 
 class Post(models.Model):
     """
@@ -140,20 +125,6 @@ class Post(models.Model):
             raise ImproperlyConfigured(full_message)
         return reverse('blog-item', args=args)
     
-    def preview_url(self):
-        print "/%s/%s/%s/%s/" % [
-            "%04d" % self.published_on.year,
-            "%02d" % self.published_on.month,
-            "%02d" % self.published_on.day,
-            self.slug
-        ]
-        return "/%s/%s/%s/%s/" % [
-            "%04d" % self.published_on.year,
-            "%02d" % self.published_on.month,
-            "%02d" % self.published_on.day,
-            self.slug
-        ]
-
     def get_trackback_url(self):
         if blogging.settings.BLOG_ITEM_URL == 'short':
             args = [
@@ -179,7 +150,7 @@ class Post(models.Model):
         """
         Return a unique item key that can be used in order to cache it
         """
-        return "blog_item_%s" % self.id
+        return "blogging:post:%s" % (self.id,)
     
     def related_items(self):
         """
