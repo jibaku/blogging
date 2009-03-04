@@ -1,6 +1,7 @@
 #-*- coding: utf-8 -*-
 from django.views.generic.simple import direct_to_template
 from django.views.generic.list_detail import object_list
+from django.views.generic.list_detail import object_detail
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext as _
@@ -46,18 +47,16 @@ def list_items(request, page = 1, category_slug = None, tag_slug = None):
     
     return object_list(request,
                        last_items,
-                       template_name='blog/item_list.html',
                        paginate_by=ITEMS_BY_PAGE,
-                       allow_empty=False,
+                       allow_empty=True,
                        page = page,
                        extra_context=extra_context)
 
 def item_details(request, slug, year=None, month=None, day=None):
-    item = get_object_or_404(Post.availables, slug=slug)
-    
-    return direct_to_template(request,
-                             'blog/item_details.html',
-                             extra_context={'object':item})
+    return object_detail(   request,
+                            queryset=Post.availables.all(),
+                            slug=slug
+                            )
 
 def archives_details(request, year, month, page=1):
     """

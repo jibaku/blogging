@@ -18,8 +18,8 @@ from django.contrib.sites.models import Site
 
 import tagging
 from tagging.fields import TagField
-import settings
-
+import blogging.settings
+from django.conf import settings
 from utils import tokenize
 
 #
@@ -38,7 +38,7 @@ class Category(models.Model):
     name = models.CharField(_("Name"), max_length=100)
     slug = models.SlugField(_("Slug"))
     description = models.TextField(_("Description"), blank=True)
-    site = models.ForeignKey(Site, verbose_name=_("Site"))
+    site = models.ForeignKey(Site, verbose_name=_("Site"), default=settings.SITE_ID)
 
     objects = models.Manager() # The default manager.
     on_site = CurrentSiteManager()
@@ -68,7 +68,7 @@ class AvailableItemsManager(models.Manager):
         
         queryset = super(AvailableItemsManager, self).get_query_set()
         queryset = queryset.filter(published_on__lte=now)
-        queryset = queryset.filter(status=Post.LIVE_STATUS)
+        queryset = queryset.filter(status=Post.PUBLISHED)
         queryset = queryset.filter(site=current_site)
         return queryset
 
@@ -78,15 +78,13 @@ class Post(models.Model):
     date, the author, the slug, etc.
     """
     # Constants for the blog status
-    LIVE_STATUS = 1
-    DRAFT_STATUS = 2
-    HIDDEN_STATUS = 3
-    DELETED_STATUS = 4
+    DRAFT = 1
+    PUBLISHED = 2
+    DELETED = 3
     STATUS_CHOICES = (
-        (LIVE_STATUS, _('Live')),
-        (DRAFT_STATUS, _('Draft')),
-        (HIDDEN_STATUS, _('Hidden')),
-        (DELETED_STATUS, _('Deleted')),
+        (DRAFT, _('Draft')),
+        (PUBLISHED, _('Published')),
+        (DELETED, _('Deleted')),
     )
     
     title = models.CharField(_("Title"), max_length=150)
@@ -98,7 +96,7 @@ class Post(models.Model):
     published_on = models.DateTimeField(_("Published on"))
     created_on = models.DateTimeField(auto_now_add=True, editable=False)
     updated_on = models.DateTimeField(auto_now=True, editable=False)
-    status = models.IntegerField(_("Status"), choices=STATUS_CHOICES, db_index=True, default=DRAFT_STATUS)
+    status = models.IntegerField(_("Status"), choices=STATUS_CHOICES, db_index=True, default=DRAFT)
     
     selected = models.BooleanField(_("Selected"), default=False)
     comments_open = models.BooleanField(_("Are comments open?"), default=True)
@@ -106,7 +104,7 @@ class Post(models.Model):
     
     categories = models.ManyToManyField(Category, verbose_name=_("Categories"))
     
-    site = models.ForeignKey(Site, verbose_name=_("Site"))
+    site = models.ForeignKey(Site, verbose_name=_("Site"), default=settings.SITE_ID)
     
     # Managers
     objects = models.Manager() # The default manager.
@@ -122,11 +120,11 @@ class Post(models.Model):
         return self.title
     
     def get_absolute_url(self):
-        if settings.BLOG_ITEM_URL == 'short':
+        if blogging.settings.BLOG_ITEM_URL == 'short':
             args = [
                 self.slug,
             ]
-        elif settings.BLOG_ITEM_URL == 'long':
+        elif blogging.settings.BLOG_ITEM_URL == 'long':
             args = [
                 "%04d" % self.published_on.year,
                 "%02d" % self.published_on.month,
@@ -157,11 +155,11 @@ class Post(models.Model):
         ]
 
     def get_trackback_url(self):
-        if settings.BLOG_ITEM_URL == 'short':
+        if blogging.settings.BLOG_ITEM_URL == 'short':
             args = [
                 self.slug,
             ]
-        elif settings.BLOG_ITEM_URL == 'long':
+        elif blogging.settings.BLOG_ITEM_URL == 'long':
             args = [
                 "%04d" % self.published_on.year,
                 "%02d" % self.published_on.month,

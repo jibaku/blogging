@@ -1,6 +1,7 @@
 from django.contrib import admin
 from blogging.models import Category, Post
 from attachements.admin import AttachementInline
+
 class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
     list_display = ('name','site')
