@@ -100,7 +100,6 @@ class Post(models.Model):
         ordering = ['-published_on']
         verbose_name = _("item")
         verbose_name_plural = _("items")
-        get_latest_by = 'published_on'
 
     def __unicode__(self):
         return self.title

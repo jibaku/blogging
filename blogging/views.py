@@ -74,11 +74,11 @@ def archives_details(request, year, month, page=1):
                        page = page,
                        extra_context=extra_context)
 
-def archives(request):
+def archives(request, template_name="blogging/archives.html"):
     context = {
         'items':Post.availables.all()
     }
     
     return direct_to_template(request,
-                              template="archive.html",
+                              template=template_name,
                               extra_context=context)

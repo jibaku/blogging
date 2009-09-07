@@ -2,9 +2,9 @@ from django.contrib import admin
 from blogging.models import Category, Post
 try:
     from attachements.admin import AttachementInline
-    attachements_inline = [AttachementInline]
+    post_inlines = [AttachementInline,]
 except ImportError:
-    attachements_inline = []
+    post_inlines = []
 
 def make_published(modeladmin, request, queryset):
     rows_updated = queryset.update(status=Post.PUBLISHED)
@@ -36,6 +36,6 @@ class PostAdmin(admin.ModelAdmin):
     list_filter = ['site', 'author', 'status', 'selected']
     prepopulated_fields = {"slug": ("title",)}
     search_fields = ('exceprt','content','item__title')
-    inlines = [] + attachements_inline
+    inlines = post_inlines
     actions = [make_published, make_draft]
 admin.site.register(Post, PostAdmin)
