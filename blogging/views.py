@@ -25,6 +25,11 @@ def list_items(request, page = 1, category_slug = None, tag_slug = None):
     """
     Display a list of the item for the current user (for one feed or for all the
     feeds it is subscribed).
+    
+    Context contains :
+    'current_category': the current category if available (None if not)
+    'current_tag': the current tag if available (None if not)
+    'object_list': the list of the items to display
     """
     extra_context = {}
     
@@ -59,9 +64,6 @@ def item_details(request, slug, year=None, month=None, day=None):
                             )
 
 def archives_details(request, year, month, page=1):
-    """
-
-    """
     extra_context = {}
     
     items = Post.availables.all()
@@ -78,7 +80,6 @@ def archives(request, template_name="blogging/archives.html"):
     context = {
         'items':Post.availables.all()
     }
-    
     return direct_to_template(request,
                               template=template_name,
                               extra_context=context)

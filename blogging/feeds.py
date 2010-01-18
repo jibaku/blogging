@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.contrib.syndication.feeds import FeedDoesNotExist, Feed
 
 from models import Post, Category
