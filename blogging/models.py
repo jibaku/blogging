@@ -18,9 +18,6 @@ from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.conf import settings
 
-import tagging
-from tagging.fields import TagField
-
 import blogging.settings
 from blogging.utils import tokenize
 from blogging.managers import AvailableCategoriesManager, AvailableItemsManager
@@ -165,4 +162,8 @@ class Post(models.Model):
     def validated_comments(self):
         return self.comments.availables()
 
-tagging.register(Post)
+try:
+    import tagging
+    tagging.register(Post)
+except ImportError:
+    pass
