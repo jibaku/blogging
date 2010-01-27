@@ -15,11 +15,10 @@ from django.contrib.sites.models import Site
 from blogging.models import Post, Category
 from blogging.trackback import error, success
 
-from tagging.models import Tag, TaggedItem
-
 import datetime
 
 ITEMS_BY_PAGE = int(getattr(settings, 'ITEMS_BY_PAGE', 10))
+BLOGGING_ALLOW_EMPTY = getattr(settings, 'BLOGGING_ALLOW_EMPTY', False)
 
 def list_items(request, page = 1, category_slug = None, tag_slug = None):
     """
@@ -53,7 +52,7 @@ def list_items(request, page = 1, category_slug = None, tag_slug = None):
     return object_list(request,
                        last_items,
                        paginate_by=ITEMS_BY_PAGE,
-                       allow_empty=True,
+                       allow_empty=BLOGGING_ALLOW_EMPTY,
                        page = page,
                        extra_context=extra_context)
 
@@ -78,7 +77,7 @@ def archives_details(request, year, month, page=1):
 
 def archives(request, template_name="blogging/archives.html"):
     context = {
-        'items':Post.availables.all()
+        'object_list':Post.availables.all()
     }
     return direct_to_template(request,
                               template=template_name,

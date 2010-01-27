@@ -161,9 +161,3 @@ class Post(models.Model):
     @property
     def validated_comments(self):
         return self.comments.availables()
-
-try:
-    import tagging
-    tagging.register(Post)
-except ImportError:
-    pass

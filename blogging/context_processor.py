@@ -2,9 +2,6 @@
 
 from django.contrib.sites.models import Site
 from models import Category, Post
-from tagging.models import Tag
-
-from tagging.utils import calculate_cloud
 
 def categories(request):
     """
@@ -38,6 +35,8 @@ def tag_cloud(request):
     """
     Return a tag cloud for the current site
     """
+    from tagging.models import Tag
+    from tagging.utils import calculate_cloud
     current_site = Site.objects.get_current()
     site_tags = Tag.objects.usage_for_model(Post, counts=True, filters=dict(site=current_site))
     cloud = calculate_cloud(site_tags)
