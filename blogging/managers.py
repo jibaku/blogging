@@ -19,5 +19,5 @@ class AvailableItemsManager(models.Manager):
         queryset = super(AvailableItemsManager, self).get_query_set()
         queryset = queryset.filter(published_on__lte=now)
         queryset = queryset.filter(status=self.model.PUBLISHED)
-        queryset = queryset.filter(site__id=settings.SITE_ID)
+        queryset = queryset.filter(site__id__exact=settings.SITE_ID)
         return queryset

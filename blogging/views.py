@@ -48,7 +48,7 @@ def list_items(request, page = 1, category_slug = None, tag_slug = None):
         extra_context['current_tag'] = None
 
         last_items = Post.availables.all()
-    
+    print last_items.query
     return object_list(request,
                        last_items,
                        paginate_by=ITEMS_BY_PAGE,
