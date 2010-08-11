@@ -108,6 +108,12 @@ class Post(models.Model):
             args = [
                 self.slug,
             ]
+        elif blogging.settings.BLOG_ITEM_URL == 'yearmonth':
+            args = [
+                "%04d" % self.published_on.year,
+                "%02d" % self.published_on.month,
+                self.slug
+            ]
         elif blogging.settings.BLOG_ITEM_URL == 'long':
             args = [
                 "%04d" % self.published_on.year,

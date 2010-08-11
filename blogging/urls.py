@@ -18,6 +18,10 @@ if settings.BLOG_ITEM_URL == 'long':
     urlpatterns += patterns('blogging.views',
         url(r'^(?P<year>\d{4})/(?P<month>\d{2})/(?P<day>\d+)/(?P<slug>[-\w]+)$', 'item_details', name="blog-item"),
     )
+elif settings.BLOG_ITEM_URL == 'yearmonth':
+    urlpatterns += patterns('blogging.views',
+        url(r'^(?P<year>\d{4})/(?P<month>\d{2})/(?P<slug>[-\w]+)$', 'item_details', name="blog-item"),
+    )
 elif settings.BLOG_ITEM_URL == 'short':
     urlpatterns += patterns('blogging.views',
         url(r'^(?P<slug>[-\w]+)$', 'item_details', name="blog-item"),
