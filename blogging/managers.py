@@ -12,6 +12,9 @@ class AvailableCategoriesManager(models.Manager):
         queryset = queryset.filter(site__id=settings.SITE_ID)
         return queryset
 
+    def get_by_natural_key(self, slug, site_id):
+        return self.get(slug=slug, site__id=site_id)
+
 class AvailableItemsManager(models.Manager):
     def get_query_set(self):
         now = datetime.datetime.now()
@@ -21,3 +24,6 @@ class AvailableItemsManager(models.Manager):
         queryset = queryset.filter(status=self.model.PUBLISHED)
         queryset = queryset.filter(site__id__exact=settings.SITE_ID)
         return queryset
+    
+    def get_by_natural_key(self, slug, site_id):
+        return self.get(slug=slug, site__id=site_id)

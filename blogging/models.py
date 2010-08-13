@@ -49,6 +49,9 @@ class Category(models.Model):
     def get_absolute_url(self):
         return reverse('blog-category', args=[self.slug])
     
+    def natural_key(self):
+        return [self.slug, self.site.id]
+    
     def is_empty(self):
         return Post.availables.filter(categories=self).count() == 0
 
@@ -102,6 +105,9 @@ class Post(models.Model):
 
     def __unicode__(self):
         return self.title
+    
+    def natural_key(self):
+        return [self.slug, self.site.id]
     
     def get_absolute_url(self):
         if blogging.settings.BLOG_ITEM_URL == 'short':
