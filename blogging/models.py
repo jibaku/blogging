@@ -20,7 +20,7 @@ from django.conf import settings
 
 import blogging.settings
 from blogging.utils import tokenize
-from blogging.managers import AvailableCategoriesManager, AvailableItemsManager
+from blogging.managers import AvailableCategoriesManager, AvailableItemsManager, PostManager
 
 #
 #   Category
@@ -94,7 +94,7 @@ class Post(models.Model):
     site = models.ForeignKey(Site, verbose_name=_("Site"), default=settings.SITE_ID)
     
     # Managers
-    objects = models.Manager() # The default manager.
+    objects = PostManager()
     on_site = CurrentSiteManager()
     availables = AvailableItemsManager() # The Online manager.
     

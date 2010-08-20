@@ -15,6 +15,13 @@ class AvailableCategoriesManager(models.Manager):
     def get_by_natural_key(self, slug, site_id):
         return self.get(slug=slug, site__id=site_id)
 
+class PostManager(models.Manager):
+    def published(self):
+        now = datetime.datetime.now()
+        queryset = self.filter(published_on__lte=now)
+        queryset = queryset.filter(status=self.model.PUBLISHED)
+        return queryset
+
 class AvailableItemsManager(models.Manager):
     def get_query_set(self):
         now = datetime.datetime.now()

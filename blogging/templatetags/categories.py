@@ -29,3 +29,8 @@ def categories(parser, token):
         raise template.TemplateSyntaxError, "%r tag must be used with %s" % (tokens[0], "{% categories as categories %}")
     var_name = tokens[2]
     return CategoriesNode(var_name)
+
+@register.filter
+def startswith(value, arg):
+    "Removes all values of arg from the given string"
+    return value.startswith(arg)
