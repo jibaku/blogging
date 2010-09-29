@@ -8,103 +8,114 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-09 01:49+0100\n"
+"POT-Creation-Date: 2010-09-29 20:40+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: models.py:40
+#: feeds.py:23
+#, python-format
+msgid "Latest published items from %s"
+msgstr "Derniers billets de la catégorie %s"
+
+#: feeds.py:29
+msgid "Latest entries"
+msgstr "Derniers billets"
+
+#: feeds.py:31
+msgid "Latest published entries"
+msgstr "Derniers billets publiés"
+
+#: models.py:32
 msgid "Name"
 msgstr "Nom"
 
-#: models.py:41 models.py:92
+#: models.py:33 models.py:78
 msgid "Slug"
 msgstr "Slug"
 
-#: models.py:42
+#: models.py:34
 msgid "Description"
 msgstr "Description"
 
-#: models.py:43 models.py:110
+#: models.py:35 models.py:94
 msgid "Site"
 msgstr "Site"
 
-#: models.py:51
+#: models.py:43
 msgid "category"
 msgstr "Catégorie"
 
-#: models.py:52
+#: models.py:44
 msgid "categories"
 msgstr "Catégories"
 
-#: models.py:85
-msgid "Live"
-msgstr "En ligne"
-
-#: models.py:86
+#: models.py:72
 msgid "Draft"
 msgstr "Brouillon"
 
-#: models.py:87
-msgid "Hidden"
-msgstr "Caché"
+#: models.py:73
+#, fuzzy
+msgid "Published"
+msgstr "Publié le"
 
-#: models.py:88
+#: models.py:74
 msgid "Deleted"
 msgstr "Supprimé"
 
-#: models.py:91
+#: models.py:77
 msgid "Title"
 msgstr "Titre"
 
-#: models.py:93
+#: models.py:79
 msgid "Author"
 msgstr "Auteur"
 
-#: models.py:94
+#: models.py:80
 msgid "Exceprt"
 msgstr "Extrait"
 
-#: models.py:95
+#: models.py:81
 msgid "Content"
 msgstr "Contenu"
 
-#: models.py:97
+#: models.py:83
 msgid "Published on"
 msgstr "Publié le"
 
-#: models.py:100
+#: models.py:86
 msgid "Status"
 msgstr "Status"
 
-#: models.py:102
+#: models.py:88
 msgid "Selected"
 msgstr "Selectionné"
 
-#: models.py:103
+#: models.py:89
 msgid "Are comments open?"
 msgstr "Commentaires ouverts ?"
 
-#: models.py:104
+#: models.py:90
 msgid "Are trackbacks open?"
 msgstr "Trackbacks ouverts ?"
 
-#: models.py:106
+#: models.py:92
 msgid "Categories"
 msgstr "Catégories"
 
-#: models.py:119
+#: models.py:103
 msgid "item"
 msgstr "post"
 
-#: models.py:120
+#: models.py:104
 msgid "items"
 msgstr "posts"
 
-#: models.py:138 models.py:159
+#: models.py:131 models.py:152
 #, python-format
 msgid "The value of BLOG_ITEM_URL should be '%(expected)s' and not '%(found)s'"
 msgstr "La valeur de BLOG_ITEM_URL devrait être '%(expected)s' et pas '%(found)s'"

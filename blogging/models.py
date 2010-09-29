@@ -29,9 +29,9 @@ from blogging.managers import AvailableCategoriesManager, AvailableItemsManager,
 class Category(models.Model):
     """
     """
-    name = models.CharField(_("Name"), max_length=100)
-    slug = models.SlugField(_("Slug"))
-    description = models.TextField(_("Description"), blank=True)
+    name = models.CharField(_(u"Name"), max_length=100)
+    slug = models.SlugField(_(u"Slug"))
+    description = models.TextField(_(u"Description"), blank=True)
     site = models.ForeignKey(Site, verbose_name=_("Site"), default=settings.SITE_ID)
 
     objects = models.Manager() # The default manager.
@@ -40,8 +40,8 @@ class Category(models.Model):
 
     class Meta:
         ordering = ['name']
-        verbose_name = _("category")
-        verbose_name_plural = _("categories")
+        verbose_name = _(u"category")
+        verbose_name_plural = _(u"categories")
 
     def __unicode__(self):
         return self.name
@@ -69,29 +69,29 @@ class Post(models.Model):
     PUBLISHED = 2
     DELETED = 3
     STATUS_CHOICES = (
-        (DRAFT, _('Draft')),
-        (PUBLISHED, _('Published')),
-        (DELETED, _('Deleted')),
+        (DRAFT, _(u'Draft')),
+        (PUBLISHED, _(u'Published')),
+        (DELETED, _(u'Deleted')),
     )
     
-    title = models.CharField(_("Title"), max_length=150)
-    slug = models.SlugField(_("Slug"), unique=True, max_length=150, db_index=True)
-    author = models.ForeignKey(User, verbose_name=_("Author"))
-    exceprt = models.TextField(_("Exceprt"), blank=True)
-    content = models.TextField(_("Content"))
+    title = models.CharField(_(u"Title"), max_length=150)
+    slug = models.SlugField(_(u"Slug"), unique=True, max_length=150, db_index=True)
+    author = models.ForeignKey(User, verbose_name=_(u"Author"))
+    exceprt = models.TextField(_(u"Exceprt"), blank=True)
+    content = models.TextField(_(u"Content"))
     
-    published_on = models.DateTimeField(_("Published on"))
+    published_on = models.DateTimeField(_(u"Published on"))
     created_on = models.DateTimeField(auto_now_add=True, editable=False)
     updated_on = models.DateTimeField(auto_now=True, editable=False)
-    status = models.IntegerField(_("Status"), choices=STATUS_CHOICES, db_index=True, default=DRAFT)
+    status = models.IntegerField(_(u"Status"), choices=STATUS_CHOICES, db_index=True, default=DRAFT)
     
-    selected = models.BooleanField(_("Selected"), default=False)
-    comments_open = models.BooleanField(_("Are comments open?"), default=True)
-    trackback_open = models.BooleanField(_("Are trackbacks open?"), default=False)
+    selected = models.BooleanField(_(u"Selected"), default=False)
+    comments_open = models.BooleanField(_(u"Are comments open?"), default=True)
+    trackback_open = models.BooleanField(_(u"Are trackbacks open?"), default=False)
     
-    categories = models.ManyToManyField(Category, verbose_name=_("Categories"))
+    categories = models.ManyToManyField(Category, verbose_name=_(u"Categories"))
     
-    site = models.ForeignKey(Site, verbose_name=_("Site"), default=settings.SITE_ID)
+    site = models.ForeignKey(Site, verbose_name=_(u"Site"), default=settings.SITE_ID)
     
     # Managers
     objects = PostManager()
@@ -100,8 +100,8 @@ class Post(models.Model):
     
     class Meta:
         ordering = ['-published_on']
-        verbose_name = _("item")
-        verbose_name_plural = _("items")
+        verbose_name = _(u"item")
+        verbose_name_plural = _(u"items")
 
     def __unicode__(self):
         return self.title

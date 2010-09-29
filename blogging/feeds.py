@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from django.utils.translation import ugettext as _
 from django.contrib.syndication.views import Feed
 from django.shortcuts import get_object_or_404
 from django.http import Http404
@@ -19,15 +20,15 @@ class LatestEntriesByCategory(Feed):
         return obj.get_absolute_url()
 
     def description(self, category):
-        return u"Les derniers items de la category %s" % category
+        return _(u"Latest published items from %s") % category
 
     def items(self, category):
         return Post.availables.filter(categories=category)[:20]
 
 class LatestEntries(Feed):
-    title = u"Derniers items"
+    title = _(u"Latest entries")
     link = "/"
-    description = u"Derniers items du site plop plop plop"
+    description = _(u"Latest published entries")
 
     def items(self):
         return Post.availables.all()[:20]
