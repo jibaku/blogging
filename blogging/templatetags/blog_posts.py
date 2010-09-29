@@ -22,7 +22,7 @@ class LatestPostNode(template.Node):
             number_var = int(self.number_var.resolve(context))
         except template.VariableDoesNotExist:
             number_var = 10
-        queryset = Post.availables.all()
+        queryset = Post.availables.published()
         if 'networks' in self.options:
             queryset = Post.objects.published()
             queryset = queryset.exclude(site__id__exact=settings.SITE_ID)

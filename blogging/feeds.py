@@ -23,7 +23,7 @@ class LatestEntriesByCategory(Feed):
         return _(u"Latest published items from %s") % category
 
     def items(self, category):
-        return Post.availables.filter(categories=category)[:20]
+        return Post.availables.published().filter(categories=category)[:20]
 
 class LatestEntries(Feed):
     title = _(u"Latest entries")
@@ -31,7 +31,7 @@ class LatestEntries(Feed):
     description = _(u"Latest published entries")
 
     def items(self):
-        return Post.availables.all()[:20]
+        return Post.availables.published()[:20]
     
     def item_pubdate(self, item):
         return item.published_on

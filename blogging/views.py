@@ -37,17 +37,17 @@ def list_items(request, page = 1, category_slug = None, tag_slug = None):
         extra_context['current_category'] = category
         extra_context['current_tag'] = None
 
-        last_items = Post.availables.filter(categories=category)
+        last_items = Post.availables.published().filter(categories=category)
     elif tag_slug != None:
         extra_context['current_category'] = None
         extra_context['current_tag'] = tag_slug
 
-        last_items = TaggedItem.objects.get_by_model(Post.availables.all(), tag_slug)
+        last_items = TaggedItem.objects.get_by_model(Post.availables.published(), tag_slug)
     else:
         extra_context['current_category'] = None
         extra_context['current_tag'] = None
 
-        last_items = Post.availables.all()
+        last_items = Post.availables.published()
     
     return object_list(request,
                        last_items,
@@ -57,15 +57,18 @@ def list_items(request, page = 1, category_slug = None, tag_slug = None):
                        extra_context=extra_context)
 
 def item_details(request, slug, year=None, month=None, day=None):
+    """
+    Display a particular item
+    """
     return object_detail(   request,
-                            queryset=Post.availables.all(),
+                            queryset=Post.availables.published(),
                             slug=slug
                             )
 
 def archives_details(request, year, month, page=1):
     extra_context = {}
     
-    items = Post.availables.all()
+    items = Post.availables.published()
     items = items.filter(published_on__year=int(year), published_on__month=int(month))
     
     return object_list(request,
@@ -77,7 +80,7 @@ def archives_details(request, year, month, page=1):
 
 def archives(request, template_name="blogging/archives.html"):
     context = {
-        'object_list':Post.availables.all()
+        'object_list':Post.availables.published()
     }
     return direct_to_template(request,
                               template=template_name,

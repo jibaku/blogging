@@ -59,9 +59,8 @@ msgid "Draft"
 msgstr "Brouillon"
 
 #: models.py:73
-#, fuzzy
 msgid "Published"
-msgstr "Publié le"
+msgstr "Publié"
 
 #: models.py:74
 msgid "Deleted"

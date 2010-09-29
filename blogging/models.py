@@ -136,27 +136,6 @@ class Post(models.Model):
             raise ImproperlyConfigured(full_message)
         return reverse('blog-item', args=args)
     
-    def get_trackback_url(self):
-        if blogging.settings.BLOG_ITEM_URL == 'short':
-            args = [
-                self.slug,
-            ]
-        elif blogging.settings.BLOG_ITEM_URL == 'long':
-            args = [
-                "%04d" % self.published_on.year,
-                "%02d" % self.published_on.month,
-                "%02d" % self.published_on.day,
-                self.slug
-            ]
-        else:
-            msg = _("The value of BLOG_ITEM_URL should be '%(expected)s' and not '%(found)s'")
-            full_message = msg % {
-                'expected':"' or '".join(['short', 'long']),
-                'found':settings.BLOG_ITEM_URL
-            }
-            raise ImproperlyConfigured(full_message) 
-        return reverse('blog-item-trackback', args=args)
-
     def __item_cache_key(self):
         """
         Return a unique item key that can be used in order to cache it
@@ -167,9 +146,4 @@ class Post(models.Model):
         """
         Return items related to the current item
         """
-        items = Post.availables.filter(categories__in=self.categories.all()).exclude(id=self.id).distinct()[:5]
-        return items
-
-    @property
-    def validated_comments(self):
-        return self.comments.availables()
+        return Post.availables.related_items(self)
