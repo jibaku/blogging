@@ -116,15 +116,15 @@ class Post(models.Model):
             ]
         elif blogging.settings.BLOG_ITEM_URL == 'yearmonth':
             args = [
-                "%04d" % self.published_on.year,
-                "%02d" % self.published_on.month,
+                self.published_on.strftime("%Y"),
+                self.published_on.strftime("%m"),
                 self.slug
             ]
         elif blogging.settings.BLOG_ITEM_URL == 'long':
             args = [
-                "%04d" % self.published_on.year,
-                "%02d" % self.published_on.month,
-                "%02d" % self.published_on.day,
+                self.published_on.strftime("%Y"),
+                self.published_on.strftime("%m"),
+                self.published_on.strftime("%d"),
                 self.slug
             ]
         else:
@@ -135,7 +135,7 @@ class Post(models.Model):
             }
             raise ImproperlyConfigured(full_message)
         return reverse('blog-item', args=args)
-    
+
     def __item_cache_key(self):
         """
         Return a unique item key that can be used in order to cache it
