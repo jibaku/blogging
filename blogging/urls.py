@@ -1,6 +1,7 @@
 from django.conf.urls.defaults import *
-import settings
 from django.core.exceptions import ImproperlyConfigured
+
+from blogging import settings
 
 urlpatterns = patterns('blogging.views',
     url(r'^archives/$', 'archives', name='blog-archives'),

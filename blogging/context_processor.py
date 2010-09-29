@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.contrib.sites.models import Site
-from models import Category, Post
+from blogging.models import Category, Post
 
 def categories(request):
     """

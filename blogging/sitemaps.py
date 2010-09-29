@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.contrib.sitemaps import Sitemap
-from models import Post
+from blogging.models import Post
 
 class BlogSitemap(Sitemap):
     priority = 0.5
