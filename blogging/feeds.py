@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 
-from django.contrib.syndication.feeds import FeedDoesNotExist, Feed
+from django.contrib.syndication.views import Feed
+from django.shortcuts import get_object_or_404
+from django.http import Http404
 
-from models import Post, Category
+from blogging.models import Post, Category
 
 class LatestEntriesByCategory(Feed):
-    def get_object(self, bits):
-        if len(bits) != 1:
-            raise ObjectDoesNotExist
-        return Category.objects.get(slug=bits[0])
+    def get_object(self, request, category_slug):
+        return get_object_or_404(Category, slug=category_slug)
 
     def title(self, category):
         return category.name
@@ -19,15 +19,15 @@ class LatestEntriesByCategory(Feed):
         return obj.get_absolute_url()
 
     def description(self, category):
-        return "Les derniers items de la category %s" % category
+        return u"Les derniers items de la category %s" % category
 
     def items(self, category):
         return Post.availables.filter(categories=category)[:20]
 
 class LatestEntries(Feed):
-    title = "Derniers items"
+    title = u"Derniers items"
     link = "/"
-    description = "Derniers items du site plop plop plop"
+    description = u"Derniers items du site plop plop plop"
 
     def items(self):
         return Post.availables.all()[:20]
