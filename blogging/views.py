@@ -13,7 +13,6 @@ from django.views.decorators.cache import cache_page
 from django.contrib.sites.models import Site
 
 from blogging.models import Post, Category
-from blogging.trackback import error, success
 
 import datetime
 
