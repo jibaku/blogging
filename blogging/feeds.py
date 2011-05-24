@@ -4,10 +4,18 @@ from django.utils.translation import ugettext as _
 from django.contrib.syndication.views import Feed
 from django.shortcuts import get_object_or_404
 from django.http import Http404
+from django.conf import settings
 
 from blogging.models import Post, Category
 
+description_template = getattr(settings, 'BLOGGING_FEED_DESCRIPTION_TEMPLATE', "blogging/feeds/description.html")
+title_template = getattr(settings, 'BLOGGING_FEED_TITLE_TEMPLATE', "blogging/feeds/title.html")
+feed_title = getattr(settings, 'BLOGGING_FEED_TITLE', None)
+
 class LatestEntriesByCategory(Feed):
+    description_template = description_template
+    title_template = title_template
+    
     def get_object(self, request, category_slug):
         return get_object_or_404(Category, slug=category_slug)
 
@@ -26,9 +34,13 @@ class LatestEntriesByCategory(Feed):
         return Post.availables.published().filter(categories=category)[:20]
 
 class LatestEntries(Feed):
-    title = _(u"Latest entries")
+    description_template = description_template
+    title_template = title_template
     link = "/"
     description = _(u"Latest published entries")
+
+    def title(self):
+        return feed_title or _(u"Latest entries")
 
     def items(self):
         return Post.availables.published()[:20]
