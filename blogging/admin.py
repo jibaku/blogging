@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-
+from django.conf import settings
 from django.contrib import admin
+from django import forms
 from blogging.models import Category, Post
 try:
     from attachements.admin import AttachementInline
@@ -8,6 +9,10 @@ try:
 except ImportError:
     post_inlines = []
 
+try:
+    from tinymce.widgets import TinyMCE
+except ImportError:
+    pass
 def make_published(modeladmin, request, queryset):
     rows_updated = queryset.update(status=Post.PUBLISHED)
     if rows_updated == 1:
@@ -40,4 +45,18 @@ class PostAdmin(admin.ModelAdmin):
     search_fields = ('exceprt','content','item__title')
     inlines = post_inlines
     actions = [make_published, make_draft]
+    
+    def formfield_for_manytomany(self, db_field, request, **kwargs):
+        print kwargs
+        if db_field.name == "categories":
+            kwargs["queryset"] = Category.objects.filter(site__id=settings.SITE_ID)
+        return super(PostAdmin, self).formfield_for_manytomany(db_field, request, **kwargs)
+        
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        if db_field.name == 'content':
+            print 'plop'
+            return forms.CharField(widget=TinyMCE(
+                attrs={'cols': 80, 'rows': 30},
+            ))
+        return super(PostAdmin, self).formfield_for_dbfield(db_field, **kwargs)
 admin.site.register(Post, PostAdmin)

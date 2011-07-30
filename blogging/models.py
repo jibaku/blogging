@@ -5,12 +5,9 @@ import datetime
 # Importing useful functions
 from django.db import models
 
-from django.contrib.contenttypes import generic
-from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from django.core.exceptions import ImproperlyConfigured
-from django.template.loader import render_to_string
 from django.contrib.sites.managers import CurrentSiteManager
 
 # Importing useful models and fields
@@ -19,7 +16,6 @@ from django.contrib.sites.models import Site
 from django.conf import settings
 
 import blogging.settings
-from blogging.utils import tokenize
 from blogging.managers import AvailableCategoriesManager, AvailableItemsManager, PostManager
 
 #

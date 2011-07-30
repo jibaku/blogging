@@ -2,15 +2,8 @@
 from django.views.generic.simple import direct_to_template
 from django.views.generic.list_detail import object_list
 from django.views.generic.list_detail import object_detail
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
-from django.utils.translation import ugettext as _
-from django.utils.safestring import mark_safe
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
 from django.conf import settings
-from django.forms import ModelForm
-from django.views.decorators.cache import cache_page
-from django.contrib.sites.models import Site
 
 from blogging.models import Post, Category
 

@@ -27,7 +27,7 @@ class PostManager(models.Manager):
         """
         Return items related to the item passed as parameter
         """
-        return Post.availables.published().filter(categories__in=item.categories.all()).exclude(id=item.id).distinct()[:5]
+        return self.availables.published().filter(categories__in=item.categories.all()).exclude(id=item.id).distinct()[:5]
 
 class AvailableItemsManager(PostManager):
     def get_query_set(self):

@@ -4,4 +4,4 @@ It try to get the variable value from the main settings.py
 """
 from django.conf import settings
 
-BLOG_ITEM_URL = getattr(settings, 'BLOG_ITEM_URL', 'short')
+BLOG_ITEM_URL = getattr(settings, 'BLOG_ITEM_URL', 'long')
