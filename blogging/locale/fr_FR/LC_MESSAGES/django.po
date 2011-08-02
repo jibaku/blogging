@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-29 20:40+0200\n"
+"POT-Creation-Date: 2011-08-02 19:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,104 +17,126 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: feeds.py:23
+#: admin.py:18
+#, python-format
+msgid "%(count)d post was successfully marked as published."
+msgid_plural "%(count)d posts were successfully marked as published"
+msgstr[0] "%(count)d billet à été marqué comme publié"
+msgstr[1] "%(count)d billets ont été marqué comme publié"
+
+#: admin.py:22
+msgid "Mark selected stories as published"
+msgstr "Marquer les billets sélectionnés comme publié"
+
+#: admin.py:27
+#, python-format
+msgid "%(count)d post was successfully marked as draft."
+msgid_plural "%(count)d posts were successfully marked as draft"
+msgstr[0] "%(count)d billet à été marqué comme brouillon"
+msgstr[1] "%(count)d billets ont été marqué comme brouillons"
+
+#: admin.py:31
+msgid "Mark selected stories as draft"
+msgstr "Marquer les billets sélectionnés comme brouillon"
+
+#: feeds.py:31
 #, python-format
 msgid "Latest published items from %s"
 msgstr "Derniers billets de la catégorie %s"
 
-#: feeds.py:29
-msgid "Latest entries"
-msgstr "Derniers billets"
-
-#: feeds.py:31
+#: feeds.py:40
 msgid "Latest published entries"
 msgstr "Derniers billets publiés"
 
-#: models.py:32
+#: feeds.py:43
+msgid "Latest entries"
+msgstr "Derniers billets"
+
+#: models.py:28
 msgid "Name"
 msgstr "Nom"
 
-#: models.py:33 models.py:78
+#: models.py:29 models.py:74
 msgid "Slug"
 msgstr "Slug"
 
-#: models.py:34
+#: models.py:30
 msgid "Description"
 msgstr "Description"
 
-#: models.py:35 models.py:94
+#: models.py:31 models.py:90
 msgid "Site"
 msgstr "Site"
 
-#: models.py:43
+#: models.py:39
 msgid "category"
 msgstr "Catégorie"
 
-#: models.py:44
+#: models.py:40
 msgid "categories"
 msgstr "Catégories"
 
-#: models.py:72
+#: models.py:68
 msgid "Draft"
 msgstr "Brouillon"
 
-#: models.py:73
+#: models.py:69
 msgid "Published"
 msgstr "Publié"
 
-#: models.py:74
+#: models.py:70
 msgid "Deleted"
 msgstr "Supprimé"
 
-#: models.py:77
+#: models.py:73
 msgid "Title"
 msgstr "Titre"
 
-#: models.py:79
+#: models.py:75
 msgid "Author"
 msgstr "Auteur"
 
-#: models.py:80
+#: models.py:76
 msgid "Exceprt"
 msgstr "Extrait"
 
-#: models.py:81
+#: models.py:77
 msgid "Content"
 msgstr "Contenu"
 
-#: models.py:83
+#: models.py:79
 msgid "Published on"
 msgstr "Publié le"
 
-#: models.py:86
+#: models.py:82
 msgid "Status"
 msgstr "Status"
 
-#: models.py:88
+#: models.py:84
 msgid "Selected"
 msgstr "Selectionné"
 
-#: models.py:89
+#: models.py:85
 msgid "Are comments open?"
 msgstr "Commentaires ouverts ?"
 
-#: models.py:90
+#: models.py:86
 msgid "Are trackbacks open?"
 msgstr "Trackbacks ouverts ?"
 
-#: models.py:92
+#: models.py:88
 msgid "Categories"
 msgstr "Catégories"
 
-#: models.py:103
+#: models.py:99
 msgid "item"
 msgstr "post"
 
-#: models.py:104
+#: models.py:100
 msgid "items"
 msgstr "posts"
 
-#: models.py:131 models.py:152
+#: models.py:127
 #, python-format
 msgid "The value of BLOG_ITEM_URL should be '%(expected)s' and not '%(found)s'"
 msgstr "La valeur de BLOG_ITEM_URL devrait être '%(expected)s' et pas '%(found)s'"

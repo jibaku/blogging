@@ -2,6 +2,8 @@
 from django.conf import settings
 from django.contrib import admin
 from django import forms
+from django.utils.translation import ungettext, ugettext_lazy
+
 from blogging.models import Category, Post
 try:
     from attachements.admin import AttachementInline
@@ -11,22 +13,22 @@ except ImportError:
 
 # Actions
 def make_published(modeladmin, request, queryset):
-    rows_updated = queryset.update(status=Post.PUBLISHED)
-    if rows_updated == 1:
-        message_bit = "1 post was"
-    else:
-        message_bit = "%s posts were" % rows_updated
-    modeladmin.message_user(request, "%s successfully marked as published." % message_bit)
-make_published.short_description = "Mark selected stories as published"
+    count = queryset.update(status=Post.PUBLISHED)
+    message = ungettext(
+            u'%(count)d post was successfully marked as published.',
+            u'%(count)d posts were successfully marked as published',
+            count) % {'count': count,}
+    modeladmin.message_user(request, message)
+make_published.short_description = ugettext_lazy(u"Mark selected stories as published")
 
 def make_draft(modeladmin, request, queryset):
-    rows_updated = queryset.update(status=Post.DRAFT)
-    if rows_updated == 1:
-        message_bit = "1 post was"
-    else:
-        message_bit = "%s posts were" % rows_updated
-    modeladmin.message_user(request, "%s successfully marked as draft." % message_bit)
-make_draft.short_description = "Mark selected stories as draft"
+    count = queryset.update(status=Post.DRAFT)
+    message = ungettext(
+            u'%(count)d post was successfully marked as draft.',
+            u'%(count)d posts were successfully marked as draft',
+            count) % {'count': count,}
+    modeladmin.message_user(request, message)
+make_draft.short_description = ugettext_lazy(u"Mark selected stories as draft")
 
 # Model admin
 class CategoryAdmin(admin.ModelAdmin):
@@ -34,7 +36,6 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name','site')
     list_filter = ('site',)
     search_fields = ('name',)
-
 
 class PostAdmin(admin.ModelAdmin):
     list_display = ('title', 'author', 'status', 'published_on', 'selected', 'site')
