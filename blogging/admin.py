@@ -9,10 +9,7 @@ try:
 except ImportError:
     post_inlines = []
 
-try:
-    from tinymce.widgets import TinyMCE
-except ImportError:
-    pass
+# Actions
 def make_published(modeladmin, request, queryset):
     rows_updated = queryset.update(status=Post.PUBLISHED)
     if rows_updated == 1:
@@ -31,12 +28,13 @@ def make_draft(modeladmin, request, queryset):
     modeladmin.message_user(request, "%s successfully marked as draft." % message_bit)
 make_draft.short_description = "Mark selected stories as draft"
 
+# Model admin
 class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
     list_display = ('name','site')
     list_filter = ('site',)
     search_fields = ('name',)
-admin.site.register(Category, CategoryAdmin)
+
 
 class PostAdmin(admin.ModelAdmin):
     list_display = ('title', 'author', 'status', 'published_on', 'selected', 'site')
@@ -45,18 +43,6 @@ class PostAdmin(admin.ModelAdmin):
     search_fields = ('exceprt','content','item__title')
     inlines = post_inlines
     actions = [make_published, make_draft]
-    
-    def formfield_for_manytomany(self, db_field, request, **kwargs):
-        print kwargs
-        if db_field.name == "categories":
-            kwargs["queryset"] = Category.objects.filter(site__id=settings.SITE_ID)
-        return super(PostAdmin, self).formfield_for_manytomany(db_field, request, **kwargs)
-        
-    def formfield_for_dbfield(self, db_field, **kwargs):
-        if db_field.name == 'content':
-            print 'plop'
-            return forms.CharField(widget=TinyMCE(
-                attrs={'cols': 80, 'rows': 30},
-            ))
-        return super(PostAdmin, self).formfield_for_dbfield(db_field, **kwargs)
+
+admin.site.register(Category, CategoryAdmin)
 admin.site.register(Post, PostAdmin)
