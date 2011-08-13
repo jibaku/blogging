@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load markup %}
+
+{% block title %}Blog{% endblock title %}
+
+{% block content %}
+
+{% for object in object_list %}
+<div>
+	<h1><a href="{{ object.get_absolute_url }}">{{ object.title }}</a></h1>
+	<p class="meta"><em>{% trans "Author" %}</em> {{ object.author }}</p>
+	<ul>
+		<li>
+			{% trans "Category" %} :
+			{% for category in object.categories.all %}
+			<a href="{% url blog-category category.slug %}">{{ category }}</a>{% if not forloop.last %},{% endif %}
+			{% endfor %}
+		</li>	
+	</ul>
+	
+	{{ object.content|markdown }}
+</div>
+{% endfor %}
+{% endblock content %}
+	

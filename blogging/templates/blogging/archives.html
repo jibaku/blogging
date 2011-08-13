@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Archives" %}{% endblock title %}
+
+{% block content %}
+  
+{% regroup object_list by published_on.year as year_list %}
+{% for year in year_list %}
+<div>
+	<h2>{{ year.grouper }}</h2>
+	<p>{{year.list|length }} billets</p>
+	<ul>
+		{% for item in year.list %}
+		<li><a href="{{ item.get_absolute_url }}">{{ item }}</a></li>
+		{% endfor %}
+	</ul>
+</div>
+{% endfor %}
+
+{% endblock content %}
