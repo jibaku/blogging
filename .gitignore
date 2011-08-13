@@ -1,2 +1,3 @@
 blogging.egg-info/*
+build/
 *.pyc
