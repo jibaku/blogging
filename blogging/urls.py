@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import *
+from django.conf.urls.defaults import patterns, url, include
 from blogging.settings import conf
 
 def urls(url_type=conf['BLOG_ITEM_URL']):    
@@ -20,7 +20,7 @@ urlpatterns = patterns('blogging.views',
     url(r'^archives/$', 'archives', name='blog-archives'),
     url(r'^archives/(?P<year>\d{4})/(?P<month>\d{2})/$', 'archives_details', name='blog-archives-month'),
     url(r'^page-(?P<page>\d+)/$', 'list_items', name='blog-page'),
-    
+    url(r'^preview/(?P<slug>[-\w]+)/$', 'item_details', {'preview':True}, name='blog-preview-item'),
     url(r'^(?P<category_slug>[-\w]+)/$', 'list_items', name='blog-category'),
     url(r'^(?P<category_slug>[-\w]+)/page-(?P<page>\d+)/$', 'list_items', name='blog-category-page'),
     

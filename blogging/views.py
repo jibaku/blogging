@@ -37,12 +37,17 @@ def list_items(request, page = 1, category_slug = None):
                        page = page,
                        extra_context=extra_context)
 
-def item_details(request, slug, year=None, month=None, day=None):
+def item_details(request, slug, year=None, month=None, day=None, preview=False):
     """
     Display a particular item
     """
+    if preview and request.user.is_staff:
+        queryset = Post.on_site.all()
+    else:
+        queryset = Post.availables.published()
+    
     return object_detail(   request,
-                            queryset=Post.availables.published(),
+                            queryset=queryset,
                             slug=slug
                             )
 
