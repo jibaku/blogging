@@ -1,25 +1,21 @@
 #-*- coding: utf-8 -*-
+import datetime
+
 from django.views.generic.simple import direct_to_template
 from django.views.generic.list_detail import object_list
 from django.views.generic.list_detail import object_detail
 from django.shortcuts import get_object_or_404
-from django.conf import settings
 
 from blogging.models import Post, Category
+from blogging.settings import conf
 
-import datetime
-
-ITEMS_BY_PAGE = int(getattr(settings, 'ITEMS_BY_PAGE', 10))
-BLOGGING_ALLOW_EMPTY = getattr(settings, 'BLOGGING_ALLOW_EMPTY', False)
-
-def list_items(request, page = 1, category_slug = None, tag_slug = None):
+def list_items(request, page = 1, category_slug = None):
     """
     Display a list of the item for the current user (for one feed or for all the
     feeds it is subscribed).
     
     Context contains :
     'current_category': the current category if available (None if not)
-    'current_tag': the current tag if available (None if not)
     'object_list': the list of the items to display
     """
     extra_context = {}
@@ -27,24 +23,17 @@ def list_items(request, page = 1, category_slug = None, tag_slug = None):
     if category_slug != None:
         category = get_object_or_404(Category.availables, slug=category_slug)
         extra_context['current_category'] = category
-        extra_context['current_tag'] = None
 
         last_items = Post.availables.published().filter(categories=category)
-    elif tag_slug != None:
-        extra_context['current_category'] = None
-        extra_context['current_tag'] = tag_slug
-
-        last_items = TaggedItem.objects.get_by_model(Post.availables.published(), tag_slug)
     else:
         extra_context['current_category'] = None
-        extra_context['current_tag'] = None
 
         last_items = Post.availables.published()
     
     return object_list(request,
                        last_items,
-                       paginate_by=ITEMS_BY_PAGE,
-                       allow_empty=BLOGGING_ALLOW_EMPTY,
+                       paginate_by=conf['ITEMS_BY_PAGE'],
+                       allow_empty=conf['ALLOW_EMPTY'],
                        page = page,
                        extra_context=extra_context)
 
@@ -57,7 +46,7 @@ def item_details(request, slug, year=None, month=None, day=None):
                             slug=slug
                             )
 
-def archives_details(request, year, month, page=1):
+def archives_details(request, year, month, page=1, template_name='blog/item_list.html'):
     extra_context = {}
     
     items = Post.availables.published()
@@ -65,8 +54,8 @@ def archives_details(request, year, month, page=1):
     
     return object_list(request,
                        items,
-                       template_name='blog/item_list.html',
-                       paginate_by=ITEMS_BY_PAGE,
+                       template_name=template_name,
+                       paginate_by=conf['ITEMS_BY_PAGE'],
                        page = page,
                        extra_context=extra_context)
 

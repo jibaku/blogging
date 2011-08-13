@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
-from django.conf import settings
 from django.contrib import admin
-from django import forms
 from django.utils.translation import ungettext, ugettext_lazy
 
 from blogging.models import Category, Post
+
 try:
     from attachements.admin import AttachementInline
     post_inlines = [AttachementInline,]

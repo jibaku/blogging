@@ -1,10 +1,7 @@
 from django.conf.urls.defaults import *
-from django.core.exceptions import ImproperlyConfigured
+from blogging.settings import conf
 
-from blogging import settings
-
-
-def urls(url_type=settings.BLOG_ITEM_URL):    
+def urls(url_type=conf['BLOG_ITEM_URL']):    
     if url_type == 'long':
         urlpatterns = patterns('blogging.views',
             url(r'^(?P<year>\d{4})/(?P<month>\d{2})/(?P<day>\d+)/(?P<slug>[-\w]+)$', 'item_details', name="blog-item"),

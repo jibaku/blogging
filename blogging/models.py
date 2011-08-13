@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 import datetime
 
 # Importing useful functions
@@ -15,7 +14,7 @@ from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.conf import settings
 
-import blogging.settings
+from blogging.settings import conf
 from blogging.managers import AvailableCategoriesManager, AvailableItemsManager, PostManager
 
 #
@@ -106,17 +105,17 @@ class Post(models.Model):
         return [self.slug, self.site.id]
     
     def get_absolute_url(self):
-        if blogging.settings.BLOG_ITEM_URL == 'short':
+        if conf['BLOG_ITEM_URL'] == 'short':
             args = [
                 self.slug,
             ]
-        elif blogging.settings.BLOG_ITEM_URL == 'yearmonth':
+        elif conf['BLOG_ITEM_URL'] == 'yearmonth':
             args = [
                 self.published_on.strftime("%Y"),
                 self.published_on.strftime("%m"),
                 self.slug
             ]
-        elif blogging.settings.BLOG_ITEM_URL == 'long':
+        elif conf['BLOG_ITEM_URL'] == 'long':
             args = [
                 self.published_on.strftime("%Y"),
                 self.published_on.strftime("%m"),
