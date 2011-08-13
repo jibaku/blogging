@@ -1,6 +1,4 @@
 #-*- coding: utf-8 -*-
-import datetime
-
 from django.views.generic.simple import direct_to_template
 from django.views.generic.list_detail import object_list
 from django.views.generic.list_detail import object_detail
@@ -23,11 +21,9 @@ def list_items(request, page = 1, category_slug = None):
     if category_slug != None:
         category = get_object_or_404(Category.availables, slug=category_slug)
         extra_context['current_category'] = category
-
         last_items = Post.availables.published().filter(categories=category)
     else:
         extra_context['current_category'] = None
-
         last_items = Post.availables.published()
     
     return object_list(request,
@@ -39,7 +35,7 @@ def list_items(request, page = 1, category_slug = None):
 
 def item_details(request, slug, year=None, month=None, day=None, preview=False):
     """
-    Display a particular item
+    Display / Preview a particular item
     """
     if preview and request.user.is_staff:
         queryset = Post.on_site.all()
@@ -51,7 +47,10 @@ def item_details(request, slug, year=None, month=None, day=None, preview=False):
                             slug=slug
                             )
 
-def archives_details(request, year, month, page=1, template_name='blog/item_list.html'):
+def archives_details(request, year, month, page=1, template_name='blogging/post_list.html'):
+    """
+    Display the archive for a particular month
+    """
     extra_context = {}
     
     items = Post.availables.published()
@@ -65,6 +64,9 @@ def archives_details(request, year, month, page=1, template_name='blog/item_list
                        extra_context=extra_context)
 
 def archives(request, template_name="blogging/archives.html"):
+    """
+    Display the archives
+    """
     context = {
         'object_list':Post.availables.published()
     }
