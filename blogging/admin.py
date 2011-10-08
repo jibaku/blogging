@@ -1,33 +1,15 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
-from django.utils.translation import ungettext, ugettext_lazy
 
 from blogging.models import Category, Post
+from blogging.actions import make_published, make_draft
 
+# Attachements management
 try:
     from attachements.admin import AttachementInline
     post_inlines = [AttachementInline,]
 except ImportError:
     post_inlines = []
-
-# Actions
-def make_published(modeladmin, request, queryset):
-    count = queryset.update(status=Post.PUBLISHED)
-    message = ungettext(
-            u'%(count)d post was successfully marked as published.',
-            u'%(count)d posts were successfully marked as published',
-            count) % {'count': count,}
-    modeladmin.message_user(request, message)
-make_published.short_description = ugettext_lazy(u"Mark selected stories as published")
-
-def make_draft(modeladmin, request, queryset):
-    count = queryset.update(status=Post.DRAFT)
-    message = ungettext(
-            u'%(count)d post was successfully marked as draft.',
-            u'%(count)d posts were successfully marked as draft',
-            count) % {'count': count,}
-    modeladmin.message_user(request, message)
-make_draft.short_description = ugettext_lazy(u"Mark selected stories as draft")
 
 # Model admin
 class CategoryAdmin(admin.ModelAdmin):
@@ -39,10 +21,21 @@ class CategoryAdmin(admin.ModelAdmin):
 class PostAdmin(admin.ModelAdmin):
     list_display = ('title', 'author', 'status', 'published_on', 'selected', 'site')
     list_filter = ['site', 'author', 'status', 'selected']
+    date_hierarchy = 'published_on'
     prepopulated_fields = {"slug": ("title",)}
     search_fields = ('exceprt','content','item__title')
     inlines = post_inlines
     actions = [make_published, make_draft]
+
+    def formfield_for_manytomany(self, db_field, request, **kwargs):
+        """
+        Monkey patching the form field for categories
+        TODO: Create a widget to manage it more easily
+        """
+        field = super(PostAdmin, self).formfield_for_manytomany(db_field, request, **kwargs)
+        field.queryset = field.queryset.order_by('site__domain')
+        field.label_from_instance = lambda  obj: "%(site)s %(name)s"% {'site':obj.site, 'name':obj.name}
+        return field
 
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Post, PostAdmin)
