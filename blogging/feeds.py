@@ -2,12 +2,14 @@
 
 from django.utils.translation import ugettext as _
 from django.contrib.syndication.views import Feed
+from django.contrib.sites.models import Site
 from django.shortcuts import get_object_or_404
 from django.http import Http404
 from django.conf import settings
 
 from blogging.models import Post, Category
 
+# TODO: move it to the new blogging conf
 description_template = getattr(settings, 'BLOGGING_FEED_DESCRIPTION_TEMPLATE', "blogging/feeds/description.html")
 title_template = getattr(settings, 'BLOGGING_FEED_TITLE_TEMPLATE', "blogging/feeds/title.html")
 feed_title = getattr(settings, 'BLOGGING_FEED_TITLE', None)
@@ -17,14 +19,13 @@ class LatestEntriesByCategory(Feed):
     title_template = title_template
     
     def get_object(self, request, category_slug):
-        return get_object_or_404(Category, slug=category_slug)
+        site = Site.objects.get_current()
+        return get_object_or_404(Category, slug=category_slug, site=site)
 
     def title(self, category):
         return category.name
 
     def link(self, obj):
-        if not obj:
-            raise FeedDoesNotExist
         return obj.get_absolute_url()
 
     def description(self, category):
