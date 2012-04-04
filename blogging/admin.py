@@ -20,7 +20,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 class PostAdmin(admin.ModelAdmin):
     list_display = ('title', 'author', 'status', 'published_on', 'selected', 'site')
-    list_filter = ['site', 'author', 'status', 'selected']
+    list_filter = ['site', 'author', 'status', 'selected', 'categories']
     date_hierarchy = 'published_on'
     prepopulated_fields = {"slug": ("title",)}
     search_fields = ('exceprt','content','item__title')
