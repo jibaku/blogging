@@ -4,7 +4,6 @@ from django.utils.translation import ugettext as _
 from django.contrib.syndication.views import Feed
 from django.contrib.sites.models import Site
 from django.shortcuts import get_object_or_404
-from django.http import Http404
 from django.conf import settings
 
 from blogging.models import Post, Category

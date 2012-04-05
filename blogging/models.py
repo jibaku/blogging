@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-import datetime
-
 # Importing useful functions
 from django.db import models
 

@@ -4,13 +4,6 @@ from django.contrib import admin
 from blogging.models import Category, Post
 from blogging.actions import make_published, make_draft, make_selected
 
-# Attachements management
-try:
-    from attachements.admin import AttachementInline
-    post_inlines = [AttachementInline,]
-except ImportError:
-    post_inlines = []
-
 # Model admin
 class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
@@ -24,7 +17,6 @@ class PostAdmin(admin.ModelAdmin):
     date_hierarchy = 'published_on'
     prepopulated_fields = {"slug": ("title",)}
     search_fields = ('exceprt','content','item__title')
-    inlines = post_inlines
     actions = [make_published, make_draft, make_selected]
 
     def formfield_for_manytomany(self, db_field, request, **kwargs):
