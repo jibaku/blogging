@@ -1,9 +1,10 @@
 #-*- coding: utf-8 -*-
 from django.views.generic import ListView
+from django.views.generic import DetailView
+from django.views.generic import TemplateView
 
 from django.views.generic.simple import direct_to_template
 from django.views.generic.list_detail import object_list
-from django.views.generic.list_detail import object_detail
 from django.shortcuts import get_object_or_404
 
 from blogging.models import Post, Category
@@ -41,43 +42,35 @@ class PostListView(ListView):
         context['current_category'] = self.category
         return context
 
-def item_details(request, slug, year=None, month=None, day=None, preview=False):
+class PostDetailView(DetailView):
     """
     Display / Preview a particular item
     """
-    if preview and request.user.is_staff:
-        queryset = Post.on_site.all()
-    else:
-        queryset = Post.availables.published()
     
-    return object_detail(   request,
-                            queryset=queryset,
-                            slug=slug
-                            )
+    def get_queryset(self):
+        if self.kwargs.get('preview', False) and self.request.user.is_staff:
+            queryset = Post.on_site.all()
+        else:
+            queryset = Post.availables.published()
+        return queryset
 
-def archives_details(request, year, month, page=1, template_name='blogging/post_list.html'):
+class ArchivesDetailsListView(ListView):
     """
     Display the archive for a particular month
     """
-    extra_context = {}
+    template_name='blogging/post_list.html'
+    paginate_by = conf['ITEMS_BY_PAGE']
     
-    items = Post.availables.published()
-    items = items.filter(published_on__year=int(year), published_on__month=int(month))
-    
-    return object_list(request,
-                       items,
-                       template_name=template_name,
-                       paginate_by=conf['ITEMS_BY_PAGE'],
-                       page = page,
-                       extra_context=extra_context)
+    def get_queryset(self):
+        items = Post.availables.published()
+        items = items.filter(published_on__year=int(self.kwargs['year']), published_on__month=int(self.kwargs['month']))
+        return items
 
-def archives(request, template_name="blogging/archives.html"):
-    """
-    Display the archives
-    """
-    context = {
-        'object_list':Post.availables.published()
-    }
-    return direct_to_template(request,
-                              template=template_name,
-                              extra_context=context)
+class ArchivesView(TemplateView):
+    template_name = "blogging/archives.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(ArchivesView, self).get_context_data(**kwargs)
+        context['object_list'] = Post.availables.published()
+        return context
+        
