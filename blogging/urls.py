@@ -1,6 +1,8 @@
 from django.conf.urls.defaults import patterns, url, include
 from blogging.settings import conf
 
+from blogging.views import PostListView
+
 def urls(url_type=conf['BLOG_ITEM_URL']):    
     if url_type == 'long':
         urlpatterns = patterns('blogging.views',
@@ -19,11 +21,11 @@ def urls(url_type=conf['BLOG_ITEM_URL']):
 urlpatterns = patterns('blogging.views',
     url(r'^archives/$', 'archives', name='blog-archives'),
     url(r'^archives/(?P<year>\d{4})/(?P<month>\d{2})/$', 'archives_details', name='blog-archives-month'),
-    url(r'^page-(?P<page>\d+)/$', 'list_items', name='blog-page'),
+    url(r'^page-(?P<page>\d+)/$', PostListView.as_view(), name='blog-page'),
     url(r'^preview/(?P<slug>[-\w]+)/$', 'item_details', {'preview':True}, name='blog-preview-item'),
-    url(r'^(?P<category_slug>[-\w]+)/$', 'list_items', name='blog-category'),
-    url(r'^(?P<category_slug>[-\w]+)/page-(?P<page>\d+)/$', 'list_items', name='blog-category-page'),
+    url(r'^(?P<category_slug>[-\w]+)/$', PostListView.as_view(), name='blog-category'),
+    url(r'^(?P<category_slug>[-\w]+)/page-(?P<page>\d+)/$', PostListView.as_view(), name='blog-category-page'),
     
     url(r'^', include(urls())),
-    url(r'^$', 'list_items', name='blog-index'),
+    url(r'^$', PostListView.as_view(), name='blog-index'),
 )

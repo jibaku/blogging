@@ -1,4 +1,6 @@
 #-*- coding: utf-8 -*-
+from django.views.generic import ListView
+
 from django.views.generic.simple import direct_to_template
 from django.views.generic.list_detail import object_list
 from django.views.generic.list_detail import object_detail
@@ -7,7 +9,7 @@ from django.shortcuts import get_object_or_404
 from blogging.models import Post, Category
 from blogging.settings import conf
 
-def list_items(request, page = 1, category_slug = None):
+class PostListView(ListView):
     """
     Display a list of the item for the current user (for one feed or for all the
     feeds it is subscribed).
@@ -16,22 +18,28 @@ def list_items(request, page = 1, category_slug = None):
     'current_category': the current category if available (None if not)
     'object_list': the list of the items to display
     """
-    extra_context = {}
-    
-    if category_slug != None:
-        category = get_object_or_404(Category.availables, slug=category_slug)
-        extra_context['current_category'] = category
-        last_items = Post.availables.published().filter(categories=category)
-    else:
-        extra_context['current_category'] = None
-        last_items = Post.availables.published()
-    
-    return object_list(request,
-                       last_items,
-                       paginate_by=conf['ITEMS_BY_PAGE'],
-                       allow_empty=conf['ALLOW_EMPTY'],
-                       page = page,
-                       extra_context=extra_context)
+
+    allow_empty = conf['ALLOW_EMPTY']
+    paginate_by = conf['ITEMS_BY_PAGE']
+
+    def get_queryset(self):
+        """
+        Return the available posts (filtered by category if needed)
+        """
+        if 'category_slug' in self.kwargs:
+            self.category = get_object_or_404(Category.availables, slug=self.kwargs['category_slug'])
+            return Post.availables.published().filter(categories=self.category)
+        else:
+            self.category = None
+            return Post.availables.published()
+
+    def get_context_data(self, **kwargs):
+        """
+        Add current category to the context
+        """
+        context = super(PostListView, self).get_context_data(**kwargs)
+        context['current_category'] = self.category
+        return context
 
 def item_details(request, slug, year=None, month=None, day=None, preview=False):
     """
