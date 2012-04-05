@@ -18,6 +18,7 @@ class PostAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
     search_fields = ('exceprt','content','item__title')
     actions = [make_published, make_draft, make_selected]
+    filter_horizontal = ["categories"]
 
     def formfield_for_manytomany(self, db_field, request, **kwargs):
         """
@@ -26,7 +27,7 @@ class PostAdmin(admin.ModelAdmin):
         """
         field = super(PostAdmin, self).formfield_for_manytomany(db_field, request, **kwargs)
         field.queryset = field.queryset.order_by('site__domain')
-        field.label_from_instance = lambda  obj: "%(site)s %(name)s"% {'site':obj.site, 'name':obj.name}
+        field.label_from_instance = lambda  obj: "%(site)s - %(name)s"% {'site':obj.site, 'name':obj.name}
         return field
 
 admin.site.register(Category, CategoryAdmin)
