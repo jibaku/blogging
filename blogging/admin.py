@@ -2,7 +2,7 @@
 from django.contrib import admin
 
 from blogging.models import Category, Post
-from blogging.actions import make_published, make_draft
+from blogging.actions import make_published, make_draft, make_selected
 
 # Attachements management
 try:
@@ -25,7 +25,7 @@ class PostAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
     search_fields = ('exceprt','content','item__title')
     inlines = post_inlines
-    actions = [make_published, make_draft]
+    actions = [make_published, make_draft, make_selected]
 
     def formfield_for_manytomany(self, db_field, request, **kwargs):
         """
