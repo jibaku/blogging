@@ -130,11 +130,11 @@ msgstr "Catégories"
 
 #: models.py:99
 msgid "item"
-msgstr "post"
+msgstr "billet"
 
 #: models.py:100
 msgid "items"
-msgstr "posts"
+msgstr "billets"
 
 #: models.py:127
 #, python-format
