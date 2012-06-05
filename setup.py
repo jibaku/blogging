@@ -29,9 +29,6 @@ setup(
     long_description = get_readme(),
     license = "BSD",
     url = "http://github.com/jibaku/blogging",
-    packages = [
-        package,
-    ],
     classifiers = [
         "Development Status :: 3 - Alpha",
         "Environment :: Web Environment",
