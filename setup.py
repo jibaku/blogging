@@ -1,4 +1,4 @@
-from distutils.core import setup
+from setuptools import setup, find_packages
 import os
 
 package = "blogging"
@@ -29,6 +29,8 @@ setup(
     long_description = get_readme(),
     license = "BSD",
     url = "http://github.com/jibaku/blogging",
+    packages=find_packages(exclude=[]),
+    include_package_data=True,
     classifiers = [
         "Development Status :: 3 - Alpha",
         "Environment :: Web Environment",
