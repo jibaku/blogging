@@ -1,0 +1,2 @@
+recursive-include blogging/locale *
+recursive-include blogging/templates *
