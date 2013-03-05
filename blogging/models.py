@@ -19,6 +19,7 @@ from blogging.managers import AvailableCategoriesManager, AvailableItemsManager,
 #   Category
 #
 
+
 class Category(models.Model):
     """
     """
@@ -27,9 +28,9 @@ class Category(models.Model):
     description = models.TextField(_(u"Description"), blank=True)
     site = models.ForeignKey(Site, verbose_name=_("Site"), default=settings.SITE_ID)
 
-    objects = models.Manager() # The default manager.
+    objects = models.Manager()  # The default manager.
     on_site = CurrentSiteManager()
-    availables = AvailableCategoriesManager() # The Online manager.
+    availables = AvailableCategoriesManager()  # The Online manager.
 
     class Meta:
         ordering = ['name']
@@ -38,13 +39,13 @@ class Category(models.Model):
 
     def __unicode__(self):
         return self.name
-    
+
     def get_absolute_url(self):
         return reverse('blog-category', args=[self.slug])
-    
+
     def natural_key(self):
         return [self.slug, self.site.id]
-    
+
     def is_empty(self):
         return Post.availables.filter(categories=self).count() == 0
 

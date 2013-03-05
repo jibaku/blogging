@@ -3,6 +3,7 @@
 from django.contrib.sitemaps import Sitemap
 from blogging.models import Post
 
+
 class BlogSitemap(Sitemap):
     priority = 0.5
 

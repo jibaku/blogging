@@ -3,18 +3,17 @@ from django.views.generic import ListView
 from django.views.generic import DetailView
 from django.views.generic import TemplateView
 
-from django.views.generic.simple import direct_to_template
-from django.views.generic.list_detail import object_list
 from django.shortcuts import get_object_or_404
 
 from blogging.models import Post, Category
 from blogging.settings import conf
 
+
 class PostListView(ListView):
     """
     Display a list of the item for the current user (for one feed or for all the
     feeds it is subscribed).
-    
+
     Context contains :
     'current_category': the current category if available (None if not)
     'object_list': the list of the items to display
@@ -42,11 +41,12 @@ class PostListView(ListView):
         context['current_category'] = self.category
         return context
 
+
 class PostDetailView(DetailView):
     """
     Display / Preview a particular item
     """
-    
+
     def get_queryset(self):
         if self.kwargs.get('preview', False) and self.request.user.is_staff:
             queryset = Post.on_site.all()
@@ -54,17 +54,19 @@ class PostDetailView(DetailView):
             queryset = Post.availables.published()
         return queryset
 
+
 class ArchivesDetailsListView(ListView):
     """
     Display the archive for a particular month
     """
-    template_name='blogging/post_list.html'
+    template_name = 'blogging/post_list.html'
     paginate_by = conf['ITEMS_BY_PAGE']
-    
+
     def get_queryset(self):
         items = Post.availables.published()
         items = items.filter(published_on__year=int(self.kwargs['year']), published_on__month=int(self.kwargs['month']))
         return items
+
 
 class ArchivesView(TemplateView):
     template_name = "blogging/archives.html"
@@ -73,4 +75,3 @@ class ArchivesView(TemplateView):
         context = super(ArchivesView, self).get_context_data(**kwargs)
         context['object_list'] = Post.availables.published()
         return context
-        

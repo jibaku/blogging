@@ -1,3 +1,5 @@
+#-*- coding: utf-8 -*-
+
 
 def tokenize(*args):
     """
@@ -13,5 +15,3 @@ def tokenize(*args):
         keyword = keyword.strip(",")
         keyword = keyword.strip(".")
         cleaned_keywords.append(keyword)
-    
-
