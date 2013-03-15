@@ -13,7 +13,7 @@
 		<li>
 			{% trans "Category" %} :
 			{% for category in object.categories.all %}
-			<a href="{% url blog-category category.slug %}">{{ category }}</a>{% if not forloop.last %},{% endif %}
+			<a href="{% url "blog-category" category.slug %}">{{ category }}</a>{% if not forloop.last %},{% endif %}
 			{% endfor %}
 		</li>	
 	</ul>

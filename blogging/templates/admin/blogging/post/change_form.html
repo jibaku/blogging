@@ -3,5 +3,5 @@
 
 {% block object-tools-items %}
 {{ block.super }}
-<li><a href="{% url blog-preview-item original.slug  %}" class="viewsitelink">{% trans "Preview" %}</a></li>
+<li><a href="{% url "blog-preview-item" original.slug  %}" class="viewsitelink">{% trans "Preview" %}</a></li>
 {% endblock %}
