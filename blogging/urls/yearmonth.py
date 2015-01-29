@@ -2,7 +2,7 @@ from django.conf.urls import patterns, url, include
 
 
 from blogging.views import PostDetailView
-from blogging.urls_base import base_patterns
+from blogging.urls.base import base_patterns
 
 urlpatterns = patterns('',)
 urlpatterns += base_patterns

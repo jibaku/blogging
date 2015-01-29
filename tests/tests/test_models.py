@@ -20,7 +20,7 @@ class PostUrlsTestCase(TestCase):
         )
         self.assertEqual(post_1.get_absolute_url(), '/2010/01/01/post-1')
 
-    @override_settings(ROOT_URLCONF='blogging.urls_short')
+    @override_settings(ROOT_URLCONF='blogging.urls.short')
     def test_short_urls(self):
         post_1, created = Post.objects.get_or_create(
             title="post 1", slug="post-1",
@@ -29,7 +29,7 @@ class PostUrlsTestCase(TestCase):
         )
         self.assertEqual(post_1.get_absolute_url(), '/post-1')
 
-    @override_settings(ROOT_URLCONF='blogging.urls_yearmonth')
+    @override_settings(ROOT_URLCONF='blogging.urls.yearmonth')
     def test_yearmonth_urls(self):
         post_1, created = Post.objects.get_or_create(
             title="post 1", slug="post-1",
