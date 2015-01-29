@@ -2,3 +2,5 @@ blogging.egg-info/*
 build/
 *.pyc
 .tox
+dist
+django_blogging.egg-info
