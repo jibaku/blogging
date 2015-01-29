@@ -2,7 +2,7 @@
 # Importing useful functions
 from django.db import models
 
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, NoReverseMatch
 from django.utils.translation import ugettext as _
 from django.core.exceptions import ImproperlyConfigured
 from django.contrib.sites.managers import CurrentSiteManager
@@ -102,33 +102,31 @@ class Post(models.Model):
     
     def natural_key(self):
         return [self.slug, self.site.id]
-    
+
     def get_absolute_url(self):
-        if conf['BLOG_ITEM_URL'] == 'short':
-            args = [
-                self.slug,
-            ]
-        elif conf['BLOG_ITEM_URL'] == 'yearmonth':
-            args = [
-                self.published_on.strftime("%Y"),
-                self.published_on.strftime("%m"),
-                self.slug
-            ]
-        elif conf['BLOG_ITEM_URL'] == 'long':
-            args = [
-                self.published_on.strftime("%Y"),
-                self.published_on.strftime("%m"),
-                self.published_on.strftime("%d"),
-                self.slug
-            ]
-        else:
-            msg = _("The value of BLOG_ITEM_URL should be '%(expected)s' and not '%(found)s'")
-            full_message = msg % {
-                'expected':"' or '".join(['short', 'long']),
-                'found':settings.BLOG_ITEM_URL
+        try:
+            kwargs = {
+                'year': self.published_on.strftime("%Y"),
+                'month': self.published_on.strftime("%m"),
+                'day': self.published_on.strftime("%d"),
+                'slug': self.slug
             }
-            raise ImproperlyConfigured(full_message)
-        return reverse('blog-item', args=args)
+            return reverse('blog-item', kwargs=kwargs, urlconf=settings.ROOT_URLCONF)
+        except NoReverseMatch:
+            try:
+                kwargs = {
+                    'year': self.published_on.strftime("%Y"),
+                    'month': self.published_on.strftime("%m"),
+                    'slug': self.slug
+                }
+                return reverse('blog-item', kwargs=kwargs, urlconf=settings.ROOT_URLCONF)
+            except NoReverseMatch:
+                kwargs = {
+                    'slug': self.slug
+                }
+                return reverse('blog-item', kwargs=kwargs, urlconf=settings.ROOT_URLCONF)
+
+
 
     def __item_cache_key(self):
         """

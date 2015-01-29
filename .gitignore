@@ -1,3 +1,4 @@
 blogging.egg-info/*
 build/
 *.pyc
+.tox

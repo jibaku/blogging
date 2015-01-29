@@ -7,5 +7,5 @@ from blogging.urls_base import base_patterns
 urlpatterns = patterns('',)
 urlpatterns += base_patterns
 urlpatterns += patterns('',
-    url(r'^(?P<year>\d{4})/(?P<month>\d{2})/(?P<day>\d+)/(?P<slug>[-\w]+)$', PostDetailView.as_view(), name="blog-item"),
+    url(r'^(?P<year>\d{4})/(?P<month>\d{2})/(?P<slug>[-\w]+)$', PostDetailView.as_view(), name="blog-item"),
 )
