@@ -7,7 +7,7 @@ from django.utils import timezone
 # Category related
 class AvailableCategoriesManager(models.Manager):
     def get_queryset(self):
-        queryset = super(AvailableCategoriesManager, self).get_query_set()
+        queryset = super(AvailableCategoriesManager, self).get_queryset()
         queryset = queryset.filter(site__id=settings.SITE_ID)
         return queryset
 
@@ -32,7 +32,7 @@ class PostManager(models.Manager):
 
 class AvailableItemsManager(PostManager):
     def get_queryset(self):
-        queryset = super(AvailableItemsManager, self).get_query_set()
+        queryset = super(AvailableItemsManager, self).get_queryset()
         queryset = queryset.filter(site__id__exact=settings.SITE_ID)
         return queryset
 
