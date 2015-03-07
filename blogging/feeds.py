@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 from django.utils.translation import ugettext as _
 from django.contrib.syndication.views import Feed
 from django.contrib.sites.models import Site

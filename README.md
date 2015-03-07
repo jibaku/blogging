@@ -1,7 +1,8 @@
 # Blogging
 
 This app is currently yet another django blogging app. But the goal is to keep
-it simple, while making it configurable and by following the best practices.
+it simple, and with as few dependencies as possible, while making it
+configurable and by following the Django best practices.
 
 ## Authors
 

@@ -23,11 +23,14 @@ class PostManager(models.Manager):
         queryset = queryset.filter(status=self.model.PUBLISHED)
         return queryset
 
-    def related_items(self, item):
+    def related_items(self, item, length=5):
         """
         Return items related to the item passed as parameter
         """
-        return self.availables.published().filter(categories__in=item.categories.all()).exclude(id=item.id).distinct()[:5]
+        qs = self.availables.published()
+        qs = qs.filter(categories__in=item.categories.all())
+        qs = qs.exclude(id=item.id)
+        qs = qs.distinct()[:length]
 
 
 class AvailableItemsManager(PostManager):

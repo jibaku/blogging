@@ -17,23 +17,25 @@ def read_file(filename):
 
 def get_readme():
     """Return the README file contents. Supports text,rst, and markdown"""
-    for name in ('README','README.rst', 'README.md'):
+    for name in ('README', 'README.rst', 'README.md'):
         if os.path.exists(name):
             return read_file(name)
     return ''
 
 setup(
-    name = package,
-    version = version,
-    author = "Fabien Schwob",
-    author_email = "fabien@x-phuture.com",
-    description = "Django blogging app. The goal is to keep it simple and configurable",
-    long_description = get_readme(),
-    license = "BSD",
-    url = "http://github.com/jibaku/blogging",
+    name=package,
+    version=version,
+    author="Fabien Schwob",
+    author_email="fabien@x-phuture.com",
+    description="""
+    Django blogging app. The goal is to keep it simple and configurable
+    """.strip(),
+    long_description=get_readme(),
+    license="BSD",
+    url="http://github.com/jibaku/blogging",
     packages=find_packages(exclude=[]),
     include_package_data=True,
-    classifiers = [
+    classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Web Environment",
         "Intended Audience :: Developers",
