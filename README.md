@@ -21,3 +21,4 @@ This code is under BSD licence
 ## Code status
 
 [![Build Status](https://travis-ci.org/jibaku/blogging.svg?branch=master)](https://travis-ci.org/jibaku/blogging)
+[![Coverage Status](https://coveralls.io/repos/jibaku/blogging/badge.svg?branch=master)](https://coveralls.io/r/jibaku/blogging?branch=master)
