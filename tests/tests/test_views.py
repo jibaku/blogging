@@ -15,11 +15,11 @@ class PostUrlsTestCase(TestCase):
         self.author = User.objects.create(username='test_user')
         self.client = Client()
 
-    def test_empty_list(self):
+    def test_not_allow_empty_list(self):
         # no post, raise 404
         response = self.client.get(reverse('blog-index'))
         self.assertEqual(response.status_code, 404)
-    
+
         post_1, created = Post.objects.get_or_create(
             title="post 1", slug="post-1",
             published_on=datetime.datetime(2010, 1, 1),

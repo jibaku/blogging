@@ -4,3 +4,6 @@ build/
 .tox
 dist
 django_blogging.egg-info
+.coverage
+.coveralls.yml
+coverage.xml
