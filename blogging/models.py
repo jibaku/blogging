@@ -1,32 +1,33 @@
 # -*- coding: utf-8 -*-
-# Importing useful functions
-from django.db import models
+import logging
 
-from django.core.urlresolvers import reverse, NoReverseMatch
-from django.utils.translation import ugettext as _
-from django.core.exceptions import ImproperlyConfigured
-from django.contrib.sites.managers import CurrentSiteManager
-
-# Importing useful models and fields
-from django.contrib.auth.models import User
-from django.contrib.sites.models import Site
 from django.conf import settings
+from django.contrib.auth.models import User
+from django.contrib.sites.managers import CurrentSiteManager
+from django.contrib.sites.models import Site
+from django.core.urlresolvers import reverse, NoReverseMatch
+from django.db import models
+from django.db.models.signals import post_save
+from django.utils.translation import ugettext as _
+import django.dispatch
 
-from blogging.settings import conf
-from blogging.managers import AvailableCategoriesManager, AvailableItemsManager, PostManager
-
-#
-#   Category
-#
+from blogging.managers import AvailableCategoriesManager
+from blogging.managers import AvailableItemsManager
+from blogging.managers import PostManager
 
 
 class Category(models.Model):
     """
+    A category to regroup similar articles
     """
     name = models.CharField(_(u"Name"), max_length=100)
     slug = models.SlugField(_(u"Slug"))
     description = models.TextField(_(u"Description"), blank=True)
     site = models.ForeignKey(Site, verbose_name=_("Site"), default=settings.SITE_ID)
+
+    # hidden cached field
+    visible_posts_count = models.IntegerField(_(u"Visible posts in category"), editable=False, default=0)
+    all_posts_count = models.IntegerField(_(u"All posts in category"), editable=False, default=0)
 
     objects = models.Manager()  # The default manager.
     on_site = CurrentSiteManager()
@@ -47,15 +48,25 @@ class Category(models.Model):
         return [self.slug, self.site.id]
 
     def is_empty(self):
-        return Post.availables.filter(categories=self).count() == 0
+        return not Post.availables.filter(categories=self).exists()
 
-#
-#   Item
-#
+    @property
+    def get_online_posts_count(self):
+        return Post.availables.filter(categories=self).count()
+
+    @property
+    def get_all_posts_count(self):
+        return Post.availables.filter(categories=self).count()
+
+    def update_counters(self):
+        self.visible_posts_count = self.get_online_posts_count
+        self.all_posts_count = self.get_all_posts_count
+        self.save()
+
 
 class Post(models.Model):
     """
-    The Item contains the generic fields for a blog item, like the publication
+    The Post contains the generic fields for a blog item, like the publication
     date, the author, the slug, etc.
     """
     # Constants for the blog status
@@ -71,22 +82,21 @@ class Post(models.Model):
     title = models.CharField(_(u"Title"), max_length=150)
     slug = models.SlugField(_(u"Slug"), unique=True, max_length=150, db_index=True)
     author = models.ForeignKey(User, verbose_name=_(u"Author"))
-    exceprt = models.TextField(_(u"Exceprt"), blank=True)
+    excerpt = models.TextField(_(u"Excerpt"), blank=True, db_column="exceprt")
     content = models.TextField(_(u"Content"))
-    
-    published_on = models.DateTimeField(_(u"Published on"))
+
+    published_on = models.DateTimeField(_(u"Published on"), db_index=True)
     created_on = models.DateTimeField(auto_now_add=True, editable=False)
     updated_on = models.DateTimeField(auto_now=True, editable=False)
     status = models.IntegerField(_(u"Status"), choices=STATUS_CHOICES, db_index=True, default=DRAFT)
     
     selected = models.BooleanField(_(u"Selected"), default=False)
     comments_open = models.BooleanField(_(u"Are comments open?"), default=True)
-    trackback_open = models.BooleanField(_(u"Are trackbacks open?"), default=False)
-    
+
     categories = models.ManyToManyField(Category, verbose_name=_(u"Categories"))
-    
+
     site = models.ForeignKey(Site, verbose_name=_(u"Site"), default=settings.SITE_ID)
-    
+
     # Managers
     objects = PostManager()
     on_site = CurrentSiteManager()
@@ -125,8 +135,6 @@ class Post(models.Model):
                     'slug': self.slug
                 }
                 return reverse('blog-item', kwargs=kwargs, urlconf=settings.ROOT_URLCONF)
-
-
 
     def __item_cache_key(self):
         """
