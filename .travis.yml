@@ -1,6 +1,5 @@
 language: python
 env:
-  - TOX_ENV=py26-1.8
   - TOX_ENV=py27-1.8
   - TOX_ENV=coverage
   #- TOX_ENV=pep8
