@@ -7,6 +7,16 @@ from blogging.actions import make_selected
 from blogging.actions import update_counters
 from blogging.models import Category
 from blogging.models import Post
+from blogging.models import Picture
+
+
+class PictureAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"slug": ("name",)}
+    list_display = (
+        'name', 'site', 'description', 'image',
+    )
+    list_filter = ('site',)
+    search_fields = ('name', 'description')
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -39,8 +49,11 @@ class PostAdmin(admin.ModelAdmin):
         """
         field = super(PostAdmin, self).formfield_for_manytomany(db_field, request, **kwargs)
         field.queryset = field.queryset.order_by('site__domain')
-        field.label_from_instance = lambda  obj: "%(site)s - %(name)s"% {'site':obj.site, 'name':obj.name}
+        field.label_from_instance = lambda obj: "%(site)s - %(name)s" % {
+            'site': obj.site, 'name': obj.name
+        }
         return field
 
+admin.site.register(Picture, PictureAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Post, PostAdmin)

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
+import hashlib
+import time
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -16,6 +18,28 @@ from blogging.managers import AvailableItemsManager
 from blogging.managers import PostManager
 
 
+def upload_to_blogging(instance, filename):
+    hasher = hashlib.md5()
+    hasher.update(filename.encode('utf-8'))
+    hasher.update(str(time.time()))
+    hashed_name = hasher.hexdigest()
+    extension = filename.split('.')[-1]
+    return "blogging/pictures/%s-%s.%s" % (
+        hashed_name[:5], instance.slug, extension
+    )
+
+
+class Picture(models.Model):
+    name = models.CharField(_(u"Name"), max_length=100)
+    slug = models.SlugField(_(u"Slug"))
+    description = models.TextField(_(u"Description"), blank=True)
+    site = models.ForeignKey(Site, verbose_name=_("Site"), default=settings.SITE_ID)
+    image = models.ImageField(upload_to=upload_to_blogging, max_length=200)
+
+    def __unicode__(self):
+        return self.name
+
+
 class Category(models.Model):
     """
     A category to regroup similar articles
@@ -24,6 +48,7 @@ class Category(models.Model):
     slug = models.SlugField(_(u"Slug"))
     description = models.TextField(_(u"Description"), blank=True)
     site = models.ForeignKey(Site, verbose_name=_("Site"), default=settings.SITE_ID)
+    picture = models.ForeignKey(Picture, verbose_name=_("Picture"), blank=True, null=True)
 
     # hidden cached field
     visible_posts_count = models.IntegerField(_(u"Visible posts in category"), editable=False, default=0)
@@ -84,6 +109,7 @@ class Post(models.Model):
     author = models.ForeignKey(User, verbose_name=_(u"Author"))
     excerpt = models.TextField(_(u"Excerpt"), blank=True, db_column="exceprt")
     content = models.TextField(_(u"Content"))
+    main_picture = models.ForeignKey(Picture, verbose_name=_("Picture"), blank=True, null=True)
 
     published_on = models.DateTimeField(_(u"Published on"), db_index=True)
     created_on = models.DateTimeField(auto_now_add=True, editable=False)
@@ -100,8 +126,8 @@ class Post(models.Model):
     # Managers
     objects = PostManager()
     on_site = CurrentSiteManager()
-    availables = AvailableItemsManager() # The Online manager.
-    
+    availables = AvailableItemsManager()  # The Online manager.
+
     class Meta:
         ordering = ['-published_on']
         verbose_name = _(u"item")
@@ -109,7 +135,7 @@ class Post(models.Model):
 
     def __unicode__(self):
         return self.title
-    
+
     def natural_key(self):
         return [self.slug, self.site.id]
 
@@ -141,7 +167,7 @@ class Post(models.Model):
         Return a unique item key that can be used in order to cache it
         """
         return "blogging:post:%s" % (self.id,)
-    
+
     def related_items(self):
         """
         Return items related to the current item
