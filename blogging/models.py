@@ -103,7 +103,18 @@ class Post(models.Model):
         (PUBLISHED, _(u'Published')),
         (DELETED, _(u'Deleted')),
     )
-    
+    # Constants for content type
+    TEXT = 1
+    QUOTE = 2
+    LINK = 3
+    VIDEO = 4
+    CONTENT_TYPE_CHOICES = (
+        (TEXT, _(u'Text')),
+        (QUOTE, _(u'Quote')),
+        (LINK, _(u'Link')),
+        (VIDEO, _(u'Video')),
+    )
+
     title = models.CharField(_(u"Title"), max_length=150)
     slug = models.SlugField(_(u"Slug"), unique=True, max_length=150, db_index=True)
     author = models.ForeignKey(User, verbose_name=_(u"Author"))
@@ -115,7 +126,8 @@ class Post(models.Model):
     created_on = models.DateTimeField(auto_now_add=True, editable=False)
     updated_on = models.DateTimeField(auto_now=True, editable=False)
     status = models.IntegerField(_(u"Status"), choices=STATUS_CHOICES, db_index=True, default=DRAFT)
-    
+    content_type = models.IntegerField(_(u"Type"), choices=CONTENT_TYPE_CHOICES, default=TEXT)
+
     selected = models.BooleanField(_(u"Selected"), default=False)
     comments_open = models.BooleanField(_(u"Are comments open?"), default=True)
 
