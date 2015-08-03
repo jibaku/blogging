@@ -24,7 +24,7 @@ def upload_to_blogging(instance, filename):
     hasher.update(str(time.time()))
     hashed_name = hasher.hexdigest()
     extension = filename.split('.')[-1]
-    return "blogging/pictures/%s-%s.%s" % (
+    return "blogging/pictures/{0}-{1}.{2}".format(
         hashed_name[:5], instance.slug, extension
     )
 
@@ -166,7 +166,7 @@ class Post(models.Model):
         """
         Return a unique item key that can be used in order to cache it
         """
-        return "blogging:post:%s" % (self.id,)
+        return "blogging:post:{0}".format(self.id)
 
     def related_items(self):
         """
