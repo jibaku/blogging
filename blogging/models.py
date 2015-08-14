@@ -73,15 +73,15 @@ class Category(models.Model):
         return [self.slug, self.site.id]
 
     def is_empty(self):
-        return not Post.availables.filter(categories=self).exists()
+        return not Post.availables.published().filter(categories=self).exists()
 
     @property
     def get_online_posts_count(self):
-        return Post.availables.filter(categories=self).count()
+        return Post.availables.published().filter(categories=self).count()
 
     @property
     def get_all_posts_count(self):
-        return Post.availables.filter(categories=self).count()
+        return Post.availables.published().filter(categories=self).count()
 
     def update_counters(self):
         self.visible_posts_count = self.get_online_posts_count
