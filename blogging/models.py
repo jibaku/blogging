@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+"""Models for blogging app."""
 from __future__ import unicode_literals
 
 import hashlib
@@ -95,9 +96,11 @@ class Category(models.Model):
 @python_2_unicode_compatible
 class Post(models.Model):
     """
-    The Post contains the generic fields for a blog item, like the publication
-    date, the author, the slug, etc.
+    The Post contains the generic fields for a blog item.
+
+    It's for example the publication date, the author, the slug, etc.
     """
+
     # Constants for the blog status
     DRAFT = 1
     PUBLISHED = 2
@@ -113,14 +116,14 @@ class Post(models.Model):
     LINK = 3
     VIDEO = 4
     CONTENT_TYPE_CHOICES = (
-        (TEXT, _(u'Text')),
-        (QUOTE, _(u'Quote')),
-        (LINK, _(u'Link')),
-        (VIDEO, _(u'Video')),
+        (TEXT, _("Text")),
+        (QUOTE, _("Quote")),
+        (LINK, _("Link")),
+        (VIDEO, _("Video")),
     )
 
     title = models.CharField(_(u"Title"), max_length=150)
-    slug = models.SlugField(_(u"Slug"), unique=True, max_length=150, db_index=True)
+    slug = models.SlugField(_(u"Slug"), max_length=150, db_index=True)
     author = models.ForeignKey(User, verbose_name=_(u"Author"))
     excerpt = models.TextField(_(u"Excerpt"), blank=True, db_column="exceprt")
     content = models.TextField(_(u"Content"))
@@ -130,12 +133,14 @@ class Post(models.Model):
     published_on = models.DateTimeField(_("Published on"), db_index=True)
     created_on = models.DateTimeField(auto_now_add=True, editable=False)
     updated_on = models.DateTimeField(auto_now=True, editable=False)
-    content_type = models.IntegerField(_("Type"), choices=CONTENT_TYPE_CHOICES, default=TEXT)
-    status = models.IntegerField(_("Status"), choices=STATUS_CHOICES, db_index=True, default=DRAFT)
+    post_type = models.IntegerField(_("Type"), choices=CONTENT_TYPE_CHOICES,
+                                    default=TEXT, db_index=True)
+    status = models.IntegerField(_("Status"), choices=STATUS_CHOICES,
+                                 db_index=True, default=DRAFT)
 
     selected = models.BooleanField(_("Selected"), default=False)
     comments_open = models.BooleanField(_("Are comments open?"), default=True)
-
+    source = models.URLField(_("Post source"), blank=True, null=True)
     categories = models.ManyToManyField(Category, verbose_name=_("Categories"))
 
     site = models.ForeignKey(Site, verbose_name=_("Site"), default=settings.SITE_ID)
@@ -149,6 +154,9 @@ class Post(models.Model):
         ordering = ['-published_on']
         verbose_name = _("item")
         verbose_name_plural = _("items")
+        unique_together = (
+            ("site", "slug"),
+        )
 
     def __str__(self):
         """Human post name."""

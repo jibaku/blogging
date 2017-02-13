@@ -4,6 +4,7 @@ local_path = lambda path: os.path.join(os.path.dirname(__file__), path)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': ':memory:',
         'TEST_NAME': ':memory:'
     }
 }

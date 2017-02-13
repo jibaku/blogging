@@ -6,9 +6,10 @@ from django import template
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
 
+from blogging.models import Category
+
 register = template.Library()
 
-from blogging.models import Category
 
 class CategoriesNode(template.Node):
     def __init__(self, var_name):
@@ -30,7 +31,8 @@ def categories(parser, token):
     var_name = tokens[2]
     return CategoriesNode(var_name)
 
+
 @register.filter
 def startswith(value, arg):
-    "Removes all values of arg from the given string"
+    """Removes all values of arg from the given string."""
     return value.startswith(arg)

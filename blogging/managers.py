@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from django.db import models
 from django.conf import settings
+from django.db import models
 from django.utils import timezone
 
 
@@ -24,9 +24,7 @@ class PostManager(models.Manager):
         return queryset
 
     def related_items(self, item, length=5):
-        """
-        Return items related to the item passed as parameter
-        """
+        """Return items related to the item passed as parameter."""
         qs = self.availables.published()
         qs = qs.filter(categories__in=item.categories.all())
         qs = qs.exclude(id=item.id)

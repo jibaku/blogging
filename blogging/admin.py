@@ -1,15 +1,12 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
 
-from blogging.actions import make_draft
-from blogging.actions import make_published
-from blogging.actions import make_selected
-from blogging.actions import update_counters
-from blogging.models import Category
-from blogging.models import Post
-from blogging.models import Picture
+from blogging.actions import (make_draft, make_published, make_selected,
+                              update_counters)
+from blogging.models import Category, Picture, Post
 
 
+@admin.register(Picture)
 class PictureAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
     list_display = (
@@ -19,6 +16,7 @@ class PictureAdmin(admin.ModelAdmin):
     search_fields = ('name', 'description')
 
 
+@admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
     list_display = (
@@ -26,9 +24,10 @@ class CategoryAdmin(admin.ModelAdmin):
     )
     list_filter = ('site',)
     search_fields = ('name',)
-    actions = [update_counters,]
+    actions = [update_counters, ]
 
 
+@admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     list_display = (
         'title', 'author', 'status', 'published_on', 'selected', 'site'
@@ -44,7 +43,8 @@ class PostAdmin(admin.ModelAdmin):
 
     def formfield_for_manytomany(self, db_field, request, **kwargs):
         """
-        Monkey patching the form field for categories
+        Monkey patching the form field for categories.
+
         TODO: Create a widget to manage it more easily
         """
         field = super(PostAdmin, self).formfield_for_manytomany(db_field, request, **kwargs)
@@ -53,7 +53,3 @@ class PostAdmin(admin.ModelAdmin):
             'site': obj.site, 'name': obj.name
         }
         return field
-
-admin.site.register(Picture, PictureAdmin)
-admin.site.register(Category, CategoryAdmin)
-admin.site.register(Post, PostAdmin)

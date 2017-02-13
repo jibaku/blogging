@@ -3,13 +3,14 @@
 import re
 
 from django import template
+from django.conf import settings
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
-from django.conf import settings
+
+from blogging.models import Post
 
 register = template.Library()
 
-from blogging.models import Post
 
 class LatestPostNode(template.Node):
     def __init__(self, number_var, var_name, options):
