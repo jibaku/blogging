@@ -26,7 +26,7 @@ def categories(parser, token):
     """
     tokens = token.split_contents()
     if len(tokens) is not 3 and token[0] == 'categories' and token[0] == 'as':
-        raise template.TemplateSyntaxError("%r tag must be used with %s" % (tokens[0], "{% categories as categories %}"))
+        raise template.TemplateSyntaxError("{0!r} tag must be used with {1!s}".format(tokens[0], "{% categories as categories %}"))
     var_name = tokens[2]
     return CategoriesNode(var_name)
 
