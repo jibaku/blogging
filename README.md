@@ -1,6 +1,7 @@
 # Blogging
 
-This app is a django blogging app. The goal is to keep as simple as possible while having all the needed features for and blogging app. Othersgoal are :
+This app is a django blogging app. The goal is to keep as simple as possible
+while having all the needed features for and blogging app. Other goals are :
 
  * to have as few dependencies as possible
  * to have a configurable app
@@ -8,7 +9,7 @@ This app is a django blogging app. The goal is to keep as simple as possible whi
 
 ## Requirements
 
-* Django >= 1.7
+* Django >= 1.8
 
 ## Authors
 

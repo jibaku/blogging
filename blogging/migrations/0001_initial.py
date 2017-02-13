@@ -36,7 +36,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('title', models.CharField(max_length=150, verbose_name='Titre')),
                 ('slug', models.SlugField(unique=True, max_length=150, verbose_name='Slug')),
-                ('excerpt', models.TextField(verbose_name='Excerpt', db_column=b'exceprt', blank=True)),
+                ('excerpt', models.TextField(verbose_name='Excerpt', db_column='exceprt', blank=True)),
                 ('content', models.TextField(verbose_name='Contenu')),
                 ('published_on', models.DateTimeField(verbose_name='Publi\xe9 le')),
                 ('created_on', models.DateTimeField(auto_now_add=True)),

@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
-VERSION = (1, 1, 0, 'final', 0)
+VERSION = (1, 2, 6, 'final', 0)
 
 
 def get_version():
-    version = '%s.%s' % (VERSION[0], VERSION[1])
+    """Get app version."""
+    version = "{0}.{1}".format(VERSION[0], VERSION[1])
     if VERSION[2]:
-        version = '%s.%s' % (version, VERSION[2])
+        version = "{0}.{1}".format(version, VERSION[2])
     if VERSION[3:] == ('alpha', 0):
-        version = '%s pre-alpha' % version
+        version = "{0} pre-alpha".format(version)
     else:
         if VERSION[3] != 'final':
-            version = '%s %s %s' % (version, VERSION[3], VERSION[4])
+            version = "{0} {1} {2}".format(version, VERSION[3], VERSION[4])
     return version
