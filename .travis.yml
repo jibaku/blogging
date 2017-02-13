@@ -1,4 +1,6 @@
 language: python
+cache: pip
+
 env:
   - TOX_ENV=py27-1.8
   - TOX_ENV=coverage
