@@ -11,6 +11,7 @@ from django.contrib.sites.managers import CurrentSiteManager
 from django.contrib.sites.models import Site
 from django.core.urlresolvers import NoReverseMatch, reverse
 from django.db import models
+from django.utils import timezone
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext as _
 
@@ -130,7 +131,8 @@ class Post(models.Model):
 
     main_picture = models.ForeignKey(Picture, verbose_name=_("Picture"), blank=True, null=True)
 
-    published_on = models.DateTimeField(_("Published on"), db_index=True)
+    published_on = models.DateTimeField(_("Published on"), db_index=True,
+                                        default=timezone.now)
     created_on = models.DateTimeField(auto_now_add=True, editable=False)
     updated_on = models.DateTimeField(auto_now=True, editable=False)
     post_type = models.IntegerField(_("Type"), choices=CONTENT_TYPE_CHOICES,

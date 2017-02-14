@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
+from collections import OrderedDict
+
 from django.contrib import admin
 
-from blogging.actions import (make_draft, make_published, make_selected,
-                              update_counters)
+from blogging.actions import (make_draft, make_post_type_action,
+                              make_published, make_selected, update_counters)
 from blogging.models import Category, Picture, Post
 
 
@@ -30,16 +32,26 @@ class CategoryAdmin(admin.ModelAdmin):
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     list_display = (
-        'title', 'author', 'status', 'published_on', 'selected', 'site'
+        'title', 'author', 'status', 'published_on', 'selected', 'post_type',
+        'site'
     )
     list_filter = [
-        'site', 'author', 'status', 'selected', 'categories'
+        'site', 'author', 'status', 'selected', 'categories', 'post_type'
     ]
     date_hierarchy = 'published_on'
     prepopulated_fields = {"slug": ("title",)}
     search_fields = ('excerpt', 'content', 'item__title')
-    actions = [make_published, make_draft, make_selected]
     filter_horizontal = ["categories"]
+
+    def get_actions(self, request):
+        actions_list = [
+            ('make_published', (make_published, 'make_published', make_published.short_description)),
+            ('make_draft', (make_draft, 'make_draft', make_draft.short_description)),
+            ('make_selected', (make_selected, 'make_selected', make_selected.short_description)),
+        ]
+        for k, v in Post.CONTENT_TYPE_CHOICES:
+            actions_list.append(make_post_type_action(k, v))
+        return OrderedDict(actions_list)
 
     def formfield_for_manytomany(self, db_field, request, **kwargs):
         """
