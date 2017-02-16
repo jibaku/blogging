@@ -23,7 +23,7 @@ def upload_to_blogging(instance, filename):
     """Create file path."""
     hasher = hashlib.md5()
     hasher.update(filename.encode('utf-8'))
-    hasher.update(str(time.time()))
+    hasher.update(str(time.time()).encode('utf-8'))
     hashed_name = hasher.hexdigest()
     extension = filename.split('.')[-1]
     return "blogging/pictures/{0}-{1}.{2}".format(
