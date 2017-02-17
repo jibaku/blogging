@@ -1,4 +1,5 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
+"""Utils functions for blogging app."""
 
 
 def tokenize(*args):

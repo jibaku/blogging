@@ -16,7 +16,7 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext as _
 
 from blogging.managers import (AvailableCategoriesManager,
-                               AvailableItemsManager, PostManager)
+                               PostManager)
 
 
 def upload_to_blogging(instance, filename):
@@ -78,15 +78,15 @@ class Category(models.Model):
         return [self.slug, self.site.id]
 
     def is_empty(self):
-        return not Post.availables.published().filter(categories=self).exists()
+        return not Post.objects.published(site_id=settings.SITE_ID).filter(categories=self).exists()
 
     @property
     def get_online_posts_count(self):
-        return Post.availables.published().filter(categories=self).count()
+        return Post.objects.published(site_id=settings.SITE_ID).filter(categories=self).count()
 
     @property
     def get_all_posts_count(self):
-        return Post.availables.published().filter(categories=self).count()
+        return Post.objects.published(site_id=settings.SITE_ID).filter(categories=self).count()
 
     def update_counters(self):
         self.visible_posts_count = self.get_online_posts_count
@@ -150,7 +150,6 @@ class Post(models.Model):
     # Managers
     objects = PostManager()
     on_site = CurrentSiteManager()
-    availables = AvailableItemsManager()  # The Online manager.
 
     class Meta:
         ordering = ['-published_on']
@@ -196,4 +195,4 @@ class Post(models.Model):
 
     def related_items(self):
         """Return items related to the current item."""
-        return Post.availables.related_items(self)
+        return Post.objects.related_items(self, site_id=settings.SITE_ID)

@@ -29,10 +29,10 @@ class PostListView(ListView):
                 Category.availables,
                 slug=self.kwargs['category_slug']
             )
-            return Post.availables.published().filter(categories=self.category)
+            return Post.objects.published(site_id=settings.SITE_ID).filter(categories=self.category)
         else:
             self.category = None
-            return Post.availables.published()
+            return Post.objects.published(site_id=settings.SITE_ID)
 
     def get_context_data(self, **kwargs):
         """Add current category to the context."""
@@ -48,7 +48,7 @@ class PostDetailView(DetailView):
         if self.kwargs.get('preview', False) and self.request.user.is_staff:
             queryset = Post.on_site.all()
         else:
-            queryset = Post.availables.published()
+            queryset = Post.objects.published(site_id=settings.SITE_ID)
         return queryset
 
 
@@ -59,7 +59,7 @@ class ArchivesDetailsListView(ListView):
     paginate_by = conf['ITEMS_BY_PAGE']
 
     def get_queryset(self):
-        items = Post.availables.published()
+        items = Post.objects.published(site_id=settings.SITE_ID)
         items = items.filter(
             published_on__year=int(self.kwargs['year']),
             published_on__month=int(self.kwargs['month'])
@@ -72,5 +72,5 @@ class ArchivesView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(ArchivesView, self).get_context_data(**kwargs)
-        context['object_list'] = Post.availables.published()
+        context['object_list'] = Post.objects.published(site_id=settings.SITE_ID)
         return context

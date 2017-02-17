@@ -1,11 +1,7 @@
 # -*- coding: utf-8 -*-
 
-import re
-
 from django import template
 from django.conf import settings
-from django.core.cache import cache
-from django.core.urlresolvers import reverse
 
 from blogging.models import Post
 
@@ -23,7 +19,7 @@ class LatestPostNode(template.Node):
             number_var = int(self.number_var.resolve(context))
         except template.VariableDoesNotExist:
             number_var = 10
-        queryset = Post.availables.published()
+        queryset = Post.objects.published(site_id=settings.SITE_ID)
         if 'networks' in self.options:
             queryset = Post.objects.published()
             queryset = queryset.exclude(site__id__exact=settings.SITE_ID)
@@ -33,9 +29,7 @@ class LatestPostNode(template.Node):
 
 @register.tag(name="latest_posts")
 def latest_posts(parser, token):
-    """
-    {% latest_posts 3 as latest_posts [networks] %}
-    """
+    """{% latest_posts 3 as latest_posts [networks] %}."""
     tokens = token.split_contents()
     number_var = tokens[1]
     var_name = tokens[3]
