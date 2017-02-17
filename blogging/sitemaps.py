@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.contrib.sitemaps import Sitemap
+
 from blogging.models import Post
 
 

@@ -29,9 +29,7 @@ class LatestPostNode(template.Node):
 
 @register.tag(name="latest_posts")
 def latest_posts(parser, token):
-    """
-    {% latest_posts 3 as latest_posts [networks] %}
-    """
+    """{% latest_posts 3 as latest_posts [networks] %}."""
     tokens = token.split_contents()
     number_var = tokens[1]
     var_name = tokens[3]

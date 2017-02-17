@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.conf import settings
+"""Views for the blogging app."""
 from django.shortcuts import get_object_or_404
 from django.views.generic import DetailView, ListView, TemplateView
 
@@ -9,8 +9,10 @@ from blogging.settings import conf
 
 class PostListView(ListView):
     """
-    Display a list of the item for the current user (for one feed or for all
-    the feeds it is subscribed).
+    Display a list of post.
+
+    The list depends of the given parameters. At the moment we can filter the
+    list by categories.
 
     Context contains :
     'current_category': the current category if available (None if not)
@@ -21,9 +23,7 @@ class PostListView(ListView):
     paginate_by = conf['ITEMS_BY_PAGE']
 
     def get_queryset(self):
-        """
-        Return the available posts (filtered by category if needed)
-        """
+        """Return the available posts (filtered by category if needed)."""
         if 'category_slug' in self.kwargs:
             self.category = get_object_or_404(
                 Category.availables,
@@ -42,9 +42,7 @@ class PostListView(ListView):
 
 
 class PostDetailView(DetailView):
-    """
-    Display / Preview a particular item
-    """
+    """Display / Preview a particular item."""
 
     def get_queryset(self):
         if self.kwargs.get('preview', False) and self.request.user.is_staff:
@@ -55,9 +53,8 @@ class PostDetailView(DetailView):
 
 
 class ArchivesDetailsListView(ListView):
-    """
-    Display the archive for a particular month
-    """
+    """Display the archive for a particular month."""
+
     template_name = 'blogging/post_list.html'
     paginate_by = conf['ITEMS_BY_PAGE']
 

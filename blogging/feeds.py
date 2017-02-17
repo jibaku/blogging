@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-from django.utils.translation import ugettext as _
-from django.contrib.syndication.views import Feed
-from django.contrib.sites.models import Site
-from django.shortcuts import get_object_or_404
 from django.conf import settings
+from django.contrib.sites.models import Site
+from django.contrib.syndication.views import Feed
+from django.shortcuts import get_object_or_404
+from django.utils.translation import ugettext as _
 
-from blogging.models import Post, Category
+from blogging.models import Category, Post
 
 # TODO: move it to the new blogging conf
 description_template = getattr(settings, 'BLOGGING_FEED_DESCRIPTION_TEMPLATE', "blogging/feeds/description.html")
@@ -54,4 +54,3 @@ class LatestEntries(Feed):
     
     def item_categories(self, item):
         return item.categories.all()
-    
