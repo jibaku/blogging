@@ -61,7 +61,7 @@ class PostAdmin(admin.ModelAdmin):
         """
         field = super(PostAdmin, self).formfield_for_manytomany(db_field, request, **kwargs)
         field.queryset = field.queryset.order_by('site__domain')
-        field.label_from_instance = lambda obj: "%(site)s - %(name)s" % {
+        field.label_from_instance = lambda obj: "{site!s} - {name!s}".format(**{
             'site': obj.site, 'name': obj.name
-        }
+        })
         return field
