@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Views for the blogging app."""
+from django.conf import settings
 from django.shortcuts import get_object_or_404
 from django.views.generic import DetailView, ListView, TemplateView
 
