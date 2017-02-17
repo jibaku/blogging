@@ -12,6 +12,7 @@ description_template = getattr(settings, 'BLOGGING_FEED_DESCRIPTION_TEMPLATE', "
 title_template = getattr(settings, 'BLOGGING_FEED_TITLE_TEMPLATE', "blogging/feeds/title.html")
 feed_title = getattr(settings, 'BLOGGING_FEED_TITLE', None)
 
+
 class LatestEntriesByCategory(Feed):
     description_template = description_template
     title_template = title_template
@@ -30,7 +31,8 @@ class LatestEntriesByCategory(Feed):
         return _(u"Latest published items from %s") % category
 
     def items(self, category):
-        return Post.availables.published().filter(categories=category)[:20]
+        return Post.objects.published(site_id=settings.SITE_ID).filter(categories=category)[:20]
+
 
 class LatestEntries(Feed):
     description_template = description_template
@@ -42,8 +44,8 @@ class LatestEntries(Feed):
         return feed_title or _(u"Latest entries")
 
     def items(self):
-        return Post.availables.published()[:20]
-    
+        return Post.objects.published(site_id=settings.SITE_ID)[:20]
+
     def item_pubdate(self, item):
         return item.published_on
     

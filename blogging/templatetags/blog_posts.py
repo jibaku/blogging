@@ -1,15 +1,12 @@
 # -*- coding: utf-8 -*-
 
-import re
-
 from django import template
-from django.core.cache import cache
-from django.core.urlresolvers import reverse
 from django.conf import settings
+
+from blogging.models import Post
 
 register = template.Library()
 
-from blogging.models import Post
 
 class LatestPostNode(template.Node):
     def __init__(self, number_var, var_name, options):
@@ -22,7 +19,7 @@ class LatestPostNode(template.Node):
             number_var = int(self.number_var.resolve(context))
         except template.VariableDoesNotExist:
             number_var = 10
-        queryset = Post.availables.published()
+        queryset = Post.objects.published(site_id=settings.SITE_ID)
         if 'networks' in self.options:
             queryset = Post.objects.published()
             queryset = queryset.exclude(site__id__exact=settings.SITE_ID)
