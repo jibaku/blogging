@@ -2,8 +2,10 @@
 
 from django import template
 from django.conf import settings
+from django.contrib.sites.models import Site
 
 from blogging.models import Post
+from blogging.utils import relative_to_absolute_url, share_links
 
 register = template.Library()
 
@@ -38,3 +40,16 @@ def latest_posts(parser, token):
     except IndexError:
         options = []
     return LatestPostNode(number_var, var_name, options)
+
+
+@register.filter
+def absolute_url(path):
+    """Add domain to the given path."""
+    site = Site.objects.get_current()
+    return relative_to_absolute_url(path, site.domain)
+
+
+@register.filter
+def get_share_links(url):
+    """return social share links for fiven url."""
+    return share_links(url)
