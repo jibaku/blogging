@@ -23,3 +23,4 @@ This code is under BSD licence
 
 [![Build Status](https://travis-ci.org/jibaku/blogging.svg?branch=master)](https://travis-ci.org/jibaku/blogging)
 [![codecov.io](https://codecov.io/github/jibaku/blogging/coverage.svg?branch=master)](https://codecov.io/github/jibaku/blogging?branch=master)
+![Version on PYPI](https://img.shields.io/pypi/v/django-blogging.svg)
