@@ -6,12 +6,8 @@ python:
 cache: pip
 
 env:
-  - TOX_ENV=py27-1.10
-  - TOX_ENV=py27-1.11
-  - TOX_ENV=py35-1.10
-  - TOX_ENV=py35-1.11
-  - TOX_ENV=py36-1.10
-  - TOX_ENV=py36-1.11
+  - TOX_ENV=dj1.10
+  - TOX_ENV=dj1.11
   - TOX_ENV=coverage
   #- TOX_ENV=pep8
 
