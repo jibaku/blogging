@@ -1,4 +1,8 @@
 language: python
+python:
+  - "2.7"
+  - "3.5"
+  - "3.6"
 cache: pip
 
 env:
@@ -6,6 +10,8 @@ env:
   - TOX_ENV=py27-1.11
   - TOX_ENV=py35-1.10
   - TOX_ENV=py35-1.11
+  - TOX_ENV=py36-1.10
+  - TOX_ENV=py36-1.11
   - TOX_ENV=coverage
   #- TOX_ENV=pep8
 
