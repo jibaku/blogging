@@ -3,6 +3,8 @@
 from django import template
 from django.conf import settings
 from django.contrib.sites.models import Site
+from django.core.cache import cache
+from django.urls import reverse
 
 from blogging.models import Post
 from blogging.utils import relative_to_absolute_url, share_links

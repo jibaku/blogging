@@ -3,6 +3,7 @@ local_path = lambda path: os.path.join(os.path.dirname(__file__), path)
 
 DEBUG = True
 ALLOWED_HOSTS = ['*']
+TEMPLATE_DEBUG = True
 
 DATABASES = {
     'default': {
@@ -74,3 +75,6 @@ MIDDLEWARE_CLASSES = (
 )
 
 ROOT_URLCONF = 'tests.urls'
+
+ADMINS = []
+MANAGERS = []

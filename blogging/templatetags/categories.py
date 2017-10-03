@@ -4,7 +4,7 @@ import re
 
 from django import template
 from django.core.cache import cache
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from blogging.models import Category
 

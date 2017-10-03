@@ -6,6 +6,7 @@ from django.contrib import admin
 from blogging.actions import (make_draft, make_post_type_action,
                               make_published, make_selected, update_counters)
 from blogging.models import Category, Picture, Post
+from blogging.settings import conf
 
 
 @admin.register(Picture)
@@ -35,9 +36,6 @@ class PostAdmin(admin.ModelAdmin):
         'title', 'author', 'status', 'published_on', 'selected', 'post_type',
         'site'
     )
-    list_filter = [
-        'site', 'author', 'status', 'selected', 'categories', 'post_type'
-    ]
     date_hierarchy = 'published_on'
     prepopulated_fields = {"slug": ("title",)}
     search_fields = ('excerpt', 'content', 'item__title')
@@ -52,6 +50,15 @@ class PostAdmin(admin.ModelAdmin):
         for k, v in Post.CONTENT_TYPE_CHOICES:
             actions_list.append(make_post_type_action(k, v))
         return OrderedDict(actions_list)
+
+    def get_list_filter(self, request):
+        if conf.get('POST_LIST_FILTER_BY_AUTHOR', True):
+            return ['site', 'author', 'status', 'selected', 'categories']
+        else:
+            return ['site', 'status', 'selected', 'categories']
+
+    def get_changeform_initial_data(self, request):
+        return {'author': request.user.id}
 
     def formfield_for_manytomany(self, db_field, request, **kwargs):
         """
