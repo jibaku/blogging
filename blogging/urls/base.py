@@ -1,6 +1,7 @@
 from django.conf.urls import url
 
-from blogging.views import PostListView, PostDetailView, ArchivesView, ArchivesDetailsListView
+from blogging.views import (ArchivesDetailsListView, ArchivesView,
+                            PostDetailView, PostListView)
 
 base_patterns = [
     url(r'^$', PostListView.as_view(), name='blog-index'),

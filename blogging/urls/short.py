@@ -1,8 +1,7 @@
 from django.conf.urls import url
 
-
-from blogging.views import PostDetailView
 from blogging.urls.base import base_patterns
+from blogging.views import PostDetailView
 
 urlpatterns = []
 urlpatterns += base_patterns
