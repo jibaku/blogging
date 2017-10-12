@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
                 ('slug', models.SlugField(verbose_name='Slug')),
                 ('description', models.TextField(verbose_name='Description', blank=True)),
                 ('image', models.ImageField(max_length=200, upload_to=blogging.models.upload_to_blogging)),
-                ('site', models.ForeignKey(default=1, verbose_name='Site', to='sites.Site')),
+                ('site', models.ForeignKey(default=1, verbose_name='Site', to='sites.Site', on_delete=models.CASCADE)),
             ],
         ),
         migrations.AlterModelManagers(

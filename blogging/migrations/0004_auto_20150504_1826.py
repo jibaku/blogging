@@ -14,11 +14,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='category',
             name='picture',
-            field=models.ForeignKey(verbose_name='Picture', blank=True, to='blogging.Picture', null=True),
+            field=models.ForeignKey(verbose_name='Picture', blank=True, to='blogging.Picture', null=True, on_delete=models.CASCADE),
         ),
         migrations.AddField(
             model_name='post',
             name='main_picture',
-            field=models.ForeignKey(verbose_name='Picture', blank=True, to='blogging.Picture', null=True),
+            field=models.ForeignKey(verbose_name='Picture', blank=True, to='blogging.Picture', null=True, on_delete=models.CASCADE),
         ),
     ]

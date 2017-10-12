@@ -35,7 +35,9 @@ class Picture(models.Model):
     name = models.CharField(_("Name"), max_length=100)
     slug = models.SlugField(_("Slug"))
     description = models.TextField(_("Description"), blank=True)
-    site = models.ForeignKey(Site, verbose_name=_("Site"), default=settings.SITE_ID)
+    site = models.ForeignKey(Site, verbose_name=_("Site"),
+                             default=settings.SITE_ID,
+                             on_delete=models.CASCADE)
     image = models.ImageField(upload_to=upload_to_blogging, max_length=200)
 
     def __str__(self):
@@ -50,8 +52,12 @@ class Category(models.Model):
     name = models.CharField(_("Name"), max_length=100)
     slug = models.SlugField(_("Slug"))
     description = models.TextField(_("Description"), blank=True)
-    site = models.ForeignKey(Site, verbose_name=_("Site"), default=settings.SITE_ID)
-    picture = models.ForeignKey(Picture, verbose_name=_("Picture"), blank=True, null=True)
+    site = models.ForeignKey(Site, verbose_name=_("Site"),
+                             default=settings.SITE_ID,
+                             on_delete=models.CASCADE)
+    picture = models.ForeignKey(Picture, verbose_name=_("Picture"),
+                                blank=True, null=True,
+                                on_delete=models.CASCADE)
 
     # hidden cached field
     visible_posts_count = models.IntegerField(_("Visible posts in category"), editable=False, default=0)
@@ -124,11 +130,14 @@ class Post(models.Model):
 
     title = models.CharField(_(u"Title"), max_length=150)
     slug = models.SlugField(_(u"Slug"), max_length=150, db_index=True)
-    author = models.ForeignKey(User, verbose_name=_(u"Author"))
+    author = models.ForeignKey(User, verbose_name=_(u"Author"),
+                               on_delete=models.CASCADE)
     excerpt = models.TextField(_(u"Excerpt"), blank=True, db_column="exceprt")
     content = models.TextField(_(u"Content"))
 
-    main_picture = models.ForeignKey(Picture, verbose_name=_("Picture"), blank=True, null=True)
+    main_picture = models.ForeignKey(Picture, verbose_name=_("Picture"),
+                                     blank=True, null=True,
+                                     on_delete=models.CASCADE)
 
     published_on = models.DateTimeField(_("Published on"), db_index=True,
                                         default=timezone.now)
@@ -144,7 +153,9 @@ class Post(models.Model):
     source = models.URLField(_("Post source"), blank=True, null=True)
     categories = models.ManyToManyField(Category, verbose_name=_("Categories"))
 
-    site = models.ForeignKey(Site, verbose_name=_("Site"), default=settings.SITE_ID)
+    site = models.ForeignKey(Site, verbose_name=_("Site"),
+                             default=settings.SITE_ID,
+                             on_delete=models.CASCADE)
 
     # Managers
     objects = PostManager()

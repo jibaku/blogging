@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=100, verbose_name='Nom')),
                 ('slug', models.SlugField(verbose_name='Slug')),
                 ('description', models.TextField(verbose_name='Description', blank=True)),
-                ('site', models.ForeignKey(default=1, verbose_name='Site', to='sites.Site')),
+                ('site', models.ForeignKey(default=1, verbose_name='Site', to='sites.Site', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ['name'],
@@ -45,9 +45,9 @@ class Migration(migrations.Migration):
                 ('selected', models.BooleanField(default=False, verbose_name='Selectionn\xe9')),
                 ('comments_open', models.BooleanField(default=True, verbose_name='Commentaires ouverts ?')),
                 ('trackback_open', models.BooleanField(default=False, verbose_name='Trackbacks ouverts ?')),
-                ('author', models.ForeignKey(verbose_name='Auteur', to=settings.AUTH_USER_MODEL)),
+                ('author', models.ForeignKey(verbose_name='Auteur', to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
                 ('categories', models.ManyToManyField(to='blogging.Category', verbose_name='Cat\xe9gories')),
-                ('site', models.ForeignKey(default=1, verbose_name='Site', to='sites.Site')),
+                ('site', models.ForeignKey(default=1, verbose_name='Site', to='sites.Site', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ['-published_on'],
