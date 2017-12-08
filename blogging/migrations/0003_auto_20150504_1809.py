@@ -29,15 +29,15 @@ class Migration(migrations.Migration):
         migrations.AlterModelManagers(
             name='category',
             managers=[
-                (b'objects', django.db.models.manager.Manager()),
-                (b'on_site', django.contrib.sites.managers.CurrentSiteManager()),
+                ('objects', django.db.models.manager.Manager()),
+                ('on_site', django.contrib.sites.managers.CurrentSiteManager()),
             ],
         ),
         migrations.AlterModelManagers(
             name='post',
             managers=[
-                (b'objects', django.db.models.manager.Manager()),
-                (b'on_site', django.contrib.sites.managers.CurrentSiteManager()),
+                ('objects', django.db.models.manager.Manager()),
+                ('on_site', django.contrib.sites.managers.CurrentSiteManager()),
             ],
         ),
     ]
