@@ -58,7 +58,7 @@ def make_post_type_action(key, name):
 
     action = action_f
     action.__name__ = func_name
-    return (func_name, (action, func_name, "define selected as %s" % name))
+    return (func_name, (action, func_name, "define selected as {0!s}".format(name)))
 
 
 # Category Actions
