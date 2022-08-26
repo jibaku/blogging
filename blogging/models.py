@@ -12,7 +12,6 @@ from django.contrib.sites.models import Site
 from django.db import models
 from django.urls import NoReverseMatch, reverse
 from django.utils import timezone
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 
 from blogging.managers import AvailableCategoriesManager, PostManager
@@ -30,7 +29,6 @@ def upload_to_blogging(instance, filename):
     )
 
 
-@python_2_unicode_compatible
 class Picture(models.Model):
     name = models.CharField(_("Name"), max_length=100)
     slug = models.SlugField(_("Slug"))
@@ -45,7 +43,6 @@ class Picture(models.Model):
         return self.name
 
 
-@python_2_unicode_compatible
 class Category(models.Model):
     """A category to regroup similar articles."""
 
@@ -99,7 +96,6 @@ class Category(models.Model):
         self.save()
 
 
-@python_2_unicode_compatible
 class Post(models.Model):
     """
     The Post contains the generic fields for a blog item.
